@@ -10,10 +10,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _objectAssign = require('object-assign');
-
-var _objectAssign2 = _interopRequireDefault(_objectAssign);
-
 var enterKeyCode = 13;
 
 // Based on https://github.com/bevacqua/fuzzysearch
@@ -133,207 +129,170 @@ function byDistance(a, b) {
   return 0;
 }
 
-function getInitialState() {
-  return {
-    input: '',
-    recentlyChoseSuggestion: false
-  };
-}
+exports['default'] = _react2['default'].createClass({
+  displayName: 'SuggestibleInput',
 
-var state = getInitialState();
+  getInitialState: function getInitialState() {
+    return {
+      input: '',
+      recentlyChoseSuggestion: false
+    };
+  },
 
-var propTypes = {
-  suggestions: _react2['default'].PropTypes.array,
-  maxSuggestions: _react2['default'].PropTypes.number,
-  onChange: _react2['default'].PropTypes.func,
-  ref: _react2['default'].PropTypes.string,
-  value: _react2['default'].PropTypes.string,
-  placeholder: _react2['default'].PropTypes.string
-};
+  propTypes: {
+    suggestions: _react2['default'].PropTypes.array,
+    maxSuggestions: _react2['default'].PropTypes.number,
+    onChange: _react2['default'].PropTypes.func,
+    value: _react2['default'].PropTypes.string,
+    placeholder: _react2['default'].PropTypes.string
+  },
 
-var defaultProps = {
-  suggestions: [],
-  maxSuggestions: 10,
-  value: undefined, // If no value is defined, then don't set a value.
-  ref: 'inputField',
-  placeholder: ''
-};
+  getDefaultProps: function getDefaultProps() {
+    return {
+      suggestions: [],
+      maxSuggestions: 10,
+      value: undefined, // If no value is defined, then don't set a value.
+      placeholder: ''
+    };
+  },
 
-function shouldComponentUpdate(nextProps, nextState) {
-  return nextProps.value === '' || nextProps.value !== this.props.value || nextState.input !== this.state.input || nextState.recentlyChoseSuggestion !== this.state.recentlyChoseSuggestion;
-}
+  shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.value === '' || nextProps.value !== this.props.value || nextState.input !== this.state.input || nextState.recentlyChoseSuggestion !== this.state.recentlyChoseSuggestion;
+  },
 
-function componentWillReceiveProps(nextProps) {
-  if (nextProps.value !== undefined) {
-    this.setState({
-      input: nextProps.value
-    });
-  }
-}
-
-// Whenever the text in the input changes, update the state's input and reset
-// recentlyChoseSuggestion to false so that the suggestions show up again.
-// Finally, if there was an onChange() callback passed in the props, call
-// that at the end so that the parent can update as expected.
-function onChange(e) {
-  // let input = this.props.ref ?
-  //   this.refs[this.props.ref].getDOMNode().value :
-  //   this.refs.inputField.getDOMNode().value;
-  var input = this.refs.inputField.getDOMNode().value;
-
-  this.setState({
-    input: input,
-    recentlyChoseSuggestion: false
-  });
-
-  if (this.props.onChange) {
-    this.props.onChange(e);
-  }
-}
-
-// Simply call props.onKeyDown if it was defined, otherwise this component
-// doesn't do anything onKeyDown itself.
-function onKeyDown(e) {
-  if (e.keyCode === enterKeyCode) {
-    this.clearInput();
-  }
-
-  if (this.props.onKeyDown) {
-    this.props.onKeyDown(e);
-  }
-}
-
-// When clicking outside the suggestion box area, force the component to
-// behave *as if* a suggestion had recently been chosen (i.e., hide the
-// suggestion drop-down selection).
-function closeSuggestions(e) {
-  e.preventDefault();
-  this.setState({
-    recentlyChoseSuggestion: true
-  });
-}
-
-function clearInput(e) {
-  this.setState({
-    input: '',
-    recentlyChoseSuggestion: true
-  });
-}
-
-function chooseSuggestion(e) {
-  e.preventDefault();
-
-  var suggestion = e.target.dataset.suggestion;
-
-  // let inputElement = this.props.ref ?
-  //   this.refs[this.props.ref].getDOMNode() :
-  //   this.refs.inputField.getDOMNode();
-  var inputElement = this.refs.inputField.getDOMNode();
-
-  this.clearInput();
-
-  // If the caller has specified a callback for onChoose, call that after
-  // selecting a new suggestion, otherwise, focus on the input field with
-  // the newly populated suggestion.
-  if (this.props.onChoose) {
-    this.props.onChoose(suggestion);
-  }
-}
-
-// Show "x" for clearing search field only if it isn't currently blank.
-function renderSearchClearClass() {
-  return this.state.input ? 'search-clear' : 'search-clear disabled';
-}
-
-// Return an array of JSX elements based on any matches in
-// this.props.suggestions to the value of input.
-// Sort by simple heuristic: if input is closer to the beginning of the suggestion string
-// (e.g., "Toronto" should be more relevant than "Victoria" for the input "tor").
-function renderSuggestions(input) {
-  var clickHandler = this.chooseSuggestion;
-  var maxSuggestions = this.props.maxSuggestions ? this.props.maxSuggestions : 10;
-
-  return matches(input, this.props.suggestions).map(distanceToQuery(input)).sort(byDistance).slice(0, maxSuggestions).map(function (suggestion, i) {
-    return _react2['default'].createElement(
-      'li',
-      {
-        onClick: clickHandler,
-        key: i,
-        'data-suggestion': suggestion.value },
-      suggestion.value
-    );
-  });
-}
-
-function render() {
-  var _this = this;
-
-  var suggestionsHtml = '';
-
-  if (!this.state.recentlyChoseSuggestion) {
-    var suggestionsList = this.renderSuggestions(this.state.input);
-
-    if (suggestionsList.length > 0) {
-      suggestionsHtml = _react2['default'].createElement(
-        'div',
-        null,
-        _react2['default'].createElement(
-          'ul',
-          { className: 'suggestible-input-suggestions' },
-          suggestionsList
-        ),
-        _react2['default'].createElement('div', {
-          onClick: this.closeSuggestions,
-          className: 'suggestible-input-bg' })
-      );
+  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+    if (nextProps.value !== undefined) {
+      this.setState({
+        input: nextProps.value
+      });
     }
+  },
+
+  // Whenever the text in the input changes, update the state's input and reset
+  // recentlyChoseSuggestion to false so that the suggestions show up again.
+  // Finally, if there was an onChange() callback passed in the props, call
+  // that at the end so that the parent can update as expected.
+  onChange: function onChange(e) {
+    var input = this.refs.inputField.getDOMNode().value;
+
+    this.setState({
+      input: input,
+      recentlyChoseSuggestion: false
+    });
+
+    if (this.props.onChange) {
+      this.props.onChange(e);
+    }
+  },
+
+  // Simply call props.onKeyDown if it was defined, otherwise this component
+  // doesn't do anything onKeyDown itself.
+  onKeyDown: function onKeyDown(e) {
+    if (e.keyCode === enterKeyCode) {
+      this.clearInput();
+    }
+
+    if (this.props.onKeyDown) {
+      this.props.onKeyDown(e);
+    }
+  },
+
+  // When clicking outside the suggestion box area, force the component to
+  // behave *as if* a suggestion had recently been chosen (i.e., hide the
+  // suggestion drop-down selection).
+  closeSuggestions: function closeSuggestions(e) {
+    e.preventDefault();
+    this.setState({
+      recentlyChoseSuggestion: true
+    });
+  },
+
+  clearInput: function clearInput(e) {
+    this.setState({
+      input: '',
+      recentlyChoseSuggestion: true
+    });
+  },
+
+  chooseSuggestion: function chooseSuggestion(e) {
+    e.preventDefault();
+
+    var suggestion = e.target.dataset.suggestion;
+    var inputElement = this.refs.inputField.getDOMNode();
+
+    this.clearInput();
+
+    // If the caller has specified a callback for onChoose, call that after
+    // selecting a new suggestion, otherwise, focus on the input field with
+    // the newly populated suggestion.
+    if (this.props.onChoose) {
+      this.props.onChoose(suggestion);
+    }
+  },
+
+  // Show "x" for clearing search field only if it isn't currently blank.
+  renderSearchClearClass: function renderSearchClearClass() {
+    return this.state.input ? 'search-clear' : 'search-clear disabled';
+  },
+
+  // Return an array of JSX elements based on any matches in
+  // this.props.suggestions to the value of input.
+  // Sort by simple heuristic: if input is closer to the beginning of the suggestion string
+  // (e.g., "Toronto" should be more relevant than "Victoria" for the input "tor").
+  renderSuggestions: function renderSuggestions(input) {
+    var clickHandler = this.chooseSuggestion;
+
+    return matches(input, this.props.suggestions).map(distanceToQuery(input)).sort(byDistance).slice(0, this.props.maxSuggestions).map(function (suggestion, i) {
+      return _react2['default'].createElement(
+        'li',
+        {
+          onClick: clickHandler,
+          key: i,
+          'data-suggestion': suggestion.value },
+        suggestion.value
+      );
+    });
+  },
+
+  render: function render() {
+    var suggestionsHtml = '';
+
+    if (!this.state.recentlyChoseSuggestion) {
+      var suggestionsList = this.renderSuggestions(this.state.input);
+
+      if (suggestionsList.length > 0) {
+        suggestionsHtml = _react2['default'].createElement(
+          'div',
+          null,
+          _react2['default'].createElement(
+            'ul',
+            { className: 'suggestible-input-suggestions' },
+            suggestionsList
+          ),
+          _react2['default'].createElement('div', {
+            onClick: this.closeSuggestions,
+            className: 'suggestible-input-bg' })
+        );
+      }
+    }
+
+    return _react2['default'].createElement(
+      'div',
+      { className: 'suggestible-input' },
+      _react2['default'].createElement('input', {
+        type: 'text',
+        className: this.props.className,
+        ref: 'inputField',
+        onChange: this.onChange,
+        onKeyDown: this.onKeyDown,
+        value: this.state.input,
+        placeholder: this.props.placeholder }),
+      _react2['default'].createElement('button', {
+        className: this.renderSearchClearClass,
+        onClick: this.clearInput }),
+      _react2['default'].createElement('br', null),
+      suggestionsHtml
+    );
   }
-
-  return _react2['default'].createElement(
-    'div',
-    { className: 'suggestible-input' },
-    _react2['default'].createElement('input', {
-      type: 'text',
-      className: this.props.className,
-      ref: 'inputField',
-      onChange: function (e) {
-        return _this.onChange(e);
-      },
-      onKeyDown: function (e) {
-        return _this.onKeyDown(e);
-      },
-      value: this.state.input,
-      placeholder: this.props.placeholder }),
-    _react2['default'].createElement('button', {
-      className: function () {
-        return _this.renderSearchClearClass();
-      },
-      onClick: function (e) {
-        return _this.clearInput(e);
-      } }),
-    _react2['default'].createElement('br', null),
-    suggestionsHtml
-  );
-}
-
-function SuggestibleInput(props, context) {
-  SuggestibleInput.propTypes = propTypes;
-  SuggestibleInput.defaultProps = defaultProps;
-
-  return (0, _objectAssign2['default'])({}, _react2['default'].Component.prototype, {
-    props: props,
-    context: context,
-    state: state,
-    shouldComponentUpdate: shouldComponentUpdate,
-    componentWillReceiveProps: componentWillReceiveProps,
-    onChange: onChange,
-    onKeyDown: onKeyDown,
-    closeSuggestions: closeSuggestions,
-    renderSearchClearClass: renderSearchClearClass,
-    renderSuggestions: renderSuggestions,
-    render: render
-  });
-}
-
-exports['default'] = SuggestibleInput;
+});
 module.exports = exports['default'];
