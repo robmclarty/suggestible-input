@@ -169,8 +169,8 @@ function componentWillReceiveProps(nextProps) {
 // that at the end so that the parent can update as expected.
 function onChange(e) {
   var input = this.props.ref ?
-    this.refs[this.props.ref].value :
-    this.refs.field.value;
+    this.refs[this.props.ref].getDOMNode().value :
+    this.refs.field.getDOMNode().value;
 
   this.setState({
     input: input,
@@ -217,8 +217,8 @@ function chooseSuggestion(e) {
   let suggestion = e.target.dataset.suggestion;
 
   let inputElement = this.props.ref ?
-    this.refs[this.props.ref] :
-    this.refs.field;
+    this.refs[this.props.ref].getDOMNode() :
+    this.refs.field.getDOMNode();
 
   this.clearInput();
 

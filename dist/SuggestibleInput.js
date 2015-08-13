@@ -176,7 +176,7 @@ function componentWillReceiveProps(nextProps) {
 // Finally, if there was an onChange() callback passed in the props, call
 // that at the end so that the parent can update as expected.
 function onChange(e) {
-  var input = this.props.ref ? this.refs[this.props.ref].value : this.refs.field.value;
+  var input = this.props.ref ? this.refs[this.props.ref].getDOMNode().value : this.refs.field.getDOMNode().value;
 
   this.setState({
     input: input,
@@ -222,7 +222,7 @@ function chooseSuggestion(e) {
 
   var suggestion = e.target.dataset.suggestion;
 
-  var inputElement = this.props.ref ? this.refs[this.props.ref] : this.refs.field;
+  var inputElement = this.props.ref ? this.refs[this.props.ref].getDOMNode() : this.refs.field.getDOMNode();
 
   this.clearInput();
 
@@ -316,6 +316,7 @@ function SuggestibleInput(props, context) {
   return (0, _objectAssign2['default'])({}, _react2['default'].Component.prototype, {
     props: props,
     context: context,
+    state: state,
     shouldComponentUpdate: shouldComponentUpdate,
     componentWillReceiveProps: componentWillReceiveProps,
     onChange: onChange,
