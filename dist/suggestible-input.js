@@ -129,7 +129,7 @@ function byDistance(a, b) {
   return 0;
 }
 
-exports['default'] = _react2['default'].createClass({
+var SuggestibleInput = _react2['default'].createClass({
   displayName: 'SuggestibleInput',
 
   getInitialState: function getInitialState() {
@@ -287,12 +287,18 @@ exports['default'] = _react2['default'].createClass({
         onKeyDown: this.onKeyDown,
         value: this.state.input,
         placeholder: this.props.placeholder }),
-      _react2['default'].createElement('button', {
-        className: this.renderSearchClearClass,
-        onClick: this.clearInput }),
+      _react2['default'].createElement(
+        'button',
+        {
+          className: this.renderSearchClearClass(),
+          onClick: this.clearInput },
+        'x'
+      ),
       _react2['default'].createElement('br', null),
       suggestionsHtml
     );
   }
 });
+
+exports['default'] = SuggestibleInput;
 module.exports = exports['default'];

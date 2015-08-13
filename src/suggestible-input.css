@@ -1,11 +1,49 @@
 .suggestible-input {
   position: relative;
+  display: inline-block;
   height: 35px;
+  box-sizing: border-box;
+  margin: 50px auto;
 }
 
 .suggestible-input input {
   z-index: 9001;
   position: absolute;
+  margin: 0;
+  padding: 7px 30px 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  line-height: normal;
+  outline: none;
+}
+.suggestible-input input:focus {
+  border-color: #66cc00;
+}
+
+.search-clear {
+  z-index: 9005;
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  width: 13px;
+  height: 13px;
+  border: none;
+  /*background-color: transparent;
+  background-image: url('../images/icons/close-dark.svg');
+  background-size: 12px;
+  background-position: 0 0;
+  background-repeat: no-repeat;*/
+  background: transparent;
+  color: #333;
+  opacity: 0.5;
+}
+.search-clear:hover,
+.search-clear:active {
+  opacity: 1;
+}
+.search-clear.disabled {
+  display: none;
+  visibility: hidden;
 }
 
 .suggestible-input-suggestions {
@@ -14,19 +52,25 @@
   top: 45px;
   left: 0;
   bottom: auto;
+  width: 200px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
   background-color: white;
-  border: 1px solid $line-grey;
+  border: 1px solid #e2e2e2;
   box-shadow: 0 0 30px 0 rgba(0, 0, 0, .1);
 }
 .suggestible-input-suggestions > li {
-    background: none;
-    padding: 10px;
-    cursor: pointer;
-
-  }
+  background: none;
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #e2e2e2;
 }
 .suggestible-input-suggestions > li:last-child {
   border-bottom: none;
+}
+.suggestible-input-suggestions > li:hover {
+  background-color: #f6f6f6;
 }
 
 /* Used to mask out everything that's not inside the suggestible-input component

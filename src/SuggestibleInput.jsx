@@ -121,7 +121,7 @@ function byDistance(a, b) {
   return 0;
 }
 
-export default React.createClass({
+let SuggestibleInput = React.createClass({
   getInitialState: function () {
     return {
       input: '',
@@ -284,12 +284,13 @@ export default React.createClass({
           value={this.state.input}
           placeholder={this.props.placeholder} />
         <button
-          className={this.renderSearchClearClass}
-          onClick={this.clearInput}>
-        </button>
+          className={this.renderSearchClearClass()}
+          onClick={this.clearInput}>x</button>
         <br />
         {suggestionsHtml}
       </div>
     );
   }
 });
+
+export default SuggestibleInput;
