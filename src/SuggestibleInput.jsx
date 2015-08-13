@@ -144,7 +144,7 @@ const defaultProps = {
   suggestions: [],
   maxSuggestions: 10,
   value: undefined, // If no value is defined, then don't set a value.
-  ref: 'field',
+  ref: 'inputField',
   placeholder: ''
 };
 
@@ -168,9 +168,10 @@ function componentWillReceiveProps(nextProps) {
 // Finally, if there was an onChange() callback passed in the props, call
 // that at the end so that the parent can update as expected.
 function onChange(e) {
-  var input = this.props.ref ?
-    this.refs[this.props.ref].getDOMNode().value :
-    this.refs.field.getDOMNode().value;
+  // let input = this.props.ref ?
+  //   this.refs[this.props.ref].getDOMNode().value :
+  //   this.refs.inputField.getDOMNode().value;
+  let input = this.refs.inputField.getDOMNode().value;
 
   this.setState({
     input: input,
@@ -216,9 +217,10 @@ function chooseSuggestion(e) {
 
   let suggestion = e.target.dataset.suggestion;
 
-  let inputElement = this.props.ref ?
-    this.refs[this.props.ref].getDOMNode() :
-    this.refs.field.getDOMNode();
+  // let inputElement = this.props.ref ?
+  //   this.refs[this.props.ref].getDOMNode() :
+  //   this.refs.inputField.getDOMNode();
+  let inputElement = this.refs.inputField.getDOMNode();
 
   this.clearInput();
 
@@ -243,11 +245,12 @@ function renderSearchClearClass() {
 // (e.g., "Toronto" should be more relevant than "Victoria" for the input "tor").
 function renderSuggestions(input) {
   let clickHandler = this.chooseSuggestion;
+  let maxSuggestions = this.props.maxSuggestions ? this.props.maxSuggestions : 10;
 
   return matches(input, this.props.suggestions)
     .map(distanceToQuery(input))
     .sort(byDistance)
-    .slice(0, this.props.maxSuggestions)
+    .slice(0, maxSuggestions)
     .map(function (suggestion, i) {
       return (
         <li
@@ -285,7 +288,7 @@ function render() {
       <input
         type="text"
         className={this.props.className}
-        ref={this.props.ref}
+        ref='inputField'
         onChange={(e) => this.onChange(e)}
         onKeyDown={(e) => this.onKeyDown(e)}
         value={this.state.input}
