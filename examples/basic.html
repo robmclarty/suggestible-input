@@ -7,11 +7,29 @@
 </head>
 <body>
   <div id="example"></div>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.2/react.js"></script>
-  <script src="../dist/suggestible-input.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
+  <script src="../dist/SuggestibleInput.js"></script>
   <script>
+    var suggestions = [
+      'one',
+      'two',
+      'three',
+      'four',
+      'five',
+      'six',
+      'seven',
+      'eight',
+      'nine',
+      'ten'
+    ];
+
     React.render(
-      <SelectibleInput />,
+      React.createElement('SuggestibleInput', {
+        suggestions: suggestions,
+        ref: 'fuzzyInput',
+        className: 'search-input',
+        placeholder: 'Search for numbers'
+      }),
       document.getElementById('example')
     );
   </script>
