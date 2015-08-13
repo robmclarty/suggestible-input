@@ -1,0 +1,43 @@
+.suggestible-input {
+  position: relative;
+  height: 35px;
+}
+
+.suggestible-input input {
+  z-index: 9001;
+  position: absolute;
+}
+
+.suggestible-input-suggestions {
+  z-index: 9000; /* on top of everything */
+  position: absolute;
+  top: 45px;
+  left: 0;
+  bottom: auto;
+  background-color: white;
+  border: 1px solid $line-grey;
+  box-shadow: 0 0 30px 0 rgba(0, 0, 0, .1);
+}
+.suggestible-input-suggestions > li {
+    background: none;
+    padding: 10px;
+    cursor: pointer;
+
+  }
+}
+.suggestible-input-suggestions > li:last-child {
+  border-bottom: none;
+}
+
+/* Used to mask out everything that's not inside the suggestible-input component
+   so that it can act as a clickable area to disengage the suggestions overlay. */
+.suggestible-input-bg {
+  z-index: 8000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  cursor: default;
+}
