@@ -307,6 +307,7 @@ function SuggestibleInput(props, context) {
   return assign({}, React.Component.prototype, {
     props,
     context,
+    state,
     shouldComponentUpdate,
     componentWillReceiveProps,
     onChange,
