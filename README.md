@@ -1,7 +1,8 @@
 # Suggestible Input
 
 A [React](http://facebook.github.io/react/index.html)
-component for providing as-you-type suggestions when filling out an input field.
+component that quacks like an HTML `<input>` but which includes a selectable list
+of suggestions for filling in its value.
 
 ![screenshot](screenshot.png)
 

@@ -121,7 +121,7 @@ function byDistance(a, b) {
   return 0;
 }
 
-// An React component that quacks like an HTML <input> but which includes a
+// A React component that quacks like an HTML <input> but which includes a
 // selectable list of suggestions for filling in its value.
 const SuggestibleInput = React.createClass({
   getInitialState: function () {
