@@ -7,54 +7,26 @@ import webpack from 'gulp-webpack';
 
 gulp.task('js', function () {
   return gulp
-    .src('src/SuggestibleInput.jsx')
+    .src('src/suggestible-input.jsx')
     .pipe(concat('suggestible-input.js'))
     .pipe(babel())
     .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('standalone', function () {
+gulp.task('examples', function () {
   return gulp
-    .src('src/SuggestibleInput.jsx')
+    .src('examples/src/basic/basic.jsx')
     .pipe(webpack({
       output: {
-        filename: 'suggestible-input-standalone.js'
+        filename: 'basic.js'
       },
       module: {
         loaders: [
           { test: /\.jsx$/, loader: 'babel-loader' }
         ]
-      },
-      externals: {
-        'react': 'React'
-      },
-      resolve: {
-        extensions: ['', '.js', '.jsx']
       }
     }))
-    .pipe(gulp.dest('dist/'));
-});
-
-gulp.task('examples', function () {
-  return gulp
-    .src('examples/basic.js')
-    .pipe(webpack({
-      output: {
-        filename: 'basic-compiled.js'
-      },
-      module: {
-        loaders: [
-          { test: /\.js$/, loader: 'babel-loader' }
-        ]
-      },
-      externals: {
-        'react': 'React'
-      },
-      resolve: {
-        extensions: ['', '.js', '.jsx']
-      }
-    }))
-    .pipe(gulp.dest('examples/'));
+    .pipe(gulp.dest('examples/dist/basic/'));
 });
 
 gulp.task('css', function () {
@@ -71,6 +43,6 @@ gulp.task('lint', function () {
 
 });
 
-gulp.task('build', ['js', 'standalone', 'css']);
+gulp.task('build', ['js', 'examples', 'css']);
 
 gulp.task('default', ['build']);

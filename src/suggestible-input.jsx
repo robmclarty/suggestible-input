@@ -121,7 +121,7 @@ function byDistance(a, b) {
   return 0;
 }
 
-let SuggestibleInput = React.createClass({
+const SuggestibleInput = React.createClass({
   getInitialState: function () {
     return {
       input: '',
@@ -134,7 +134,8 @@ let SuggestibleInput = React.createClass({
     maxSuggestions: React.PropTypes.number,
     onChange: React.PropTypes.func,
     value: React.PropTypes.string,
-    placeholder: React.PropTypes.string
+    placeholder: React.PropTypes.string,
+    clearOnSelect: React.PropTypes.bool
   },
 
   getDefaultProps: function () {
@@ -142,7 +143,8 @@ let SuggestibleInput = React.createClass({
       suggestions: [],
       maxSuggestions: 10,
       value: undefined, // If no value is defined, then don't set a value.
-      placeholder: ''
+      placeholder: '',
+      clearOnSelect: false
     };
   },
 
@@ -166,10 +168,10 @@ let SuggestibleInput = React.createClass({
   // Finally, if there was an onChange() callback passed in the props, call
   // that at the end so that the parent can update as expected.
   onChange: function (e) {
-    let input = this.refs.inputField.getDOMNode().value;
+    let inputValue = this.refs.inputField.getDOMNode().value;
 
     this.setState({
-      input: input,
+      input: inputValue,
       recentlyChoseSuggestion: false
     });
 
@@ -195,6 +197,7 @@ let SuggestibleInput = React.createClass({
   // suggestion drop-down selection).
   closeSuggestions: function (e) {
     e.preventDefault();
+
     this.setState({
       recentlyChoseSuggestion: true
     });
@@ -211,9 +214,15 @@ let SuggestibleInput = React.createClass({
     e.preventDefault();
 
     let suggestion = e.target.dataset.suggestion;
-    let inputElement = this.refs.inputField.getDOMNode();
 
-    this.clearInput();
+    if (this.props.clearOnSelect) {
+      this.clearInput();
+    } else {
+      this.setState({
+        input: suggestion,
+        recentlyChoseSuggestion: true
+      });
+    }
 
     // If the caller has specified a callback for onChoose, call that after
     // selecting a new suggestion, otherwise, focus on the input field with
@@ -224,10 +233,8 @@ let SuggestibleInput = React.createClass({
   },
 
   // Show "x" for clearing search field only if it isn't currently blank.
-  renderSearchClearClass: function () {
-    return this.state.input ?
-      'search-clear' :
-      'search-clear disabled';
+  clearIsDisabled: function () {
+    return this.state.input ? '' : 'disabled';
   },
 
   // Return an array of JSX elements based on any matches in
@@ -284,8 +291,8 @@ let SuggestibleInput = React.createClass({
           value={this.state.input}
           placeholder={this.props.placeholder} />
         <button
-          className={this.renderSearchClearClass()}
-          onClick={this.clearInput}>x</button>
+          className={`suggestible-input-clear ${this.clearIsDisabled()}`}
+          onClick={this.clearInput}></button>
         <br />
         {suggestionsHtml}
       </div>

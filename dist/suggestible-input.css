@@ -1,53 +1,53 @@
 .suggestible-input {
   position: relative;
   display: inline-block;
+  width: 100%;
   height: 35px;
   box-sizing: border-box;
-  margin: 50px auto;
 }
 
-.suggestible-input input {
+.suggestible-input > input {
   z-index: 9001;
   position: absolute;
+  width: 100%;
   margin: 0;
   padding: 7px 30px 8px 12px;
   border: 1px solid #ccc;
   border-radius: 16px;
   line-height: normal;
   outline: none;
+  box-sizing: border-box;
 }
-.suggestible-input input:focus {
+.suggestible-input > input:focus {
   border-color: #66cc00;
 }
 
-.search-clear {
+.suggestible-input-clear {
   z-index: 9005;
+  display: block;
   position: absolute;
   top: 12px;
   right: 15px;
   width: 13px;
   height: 13px;
   border: none;
-  /*background-color: transparent;
-  background-image: url('../images/icons/close-dark.svg');
-  background-size: 12px;
-  background-position: 0 0;
-  background-repeat: no-repeat;*/
   background: transparent;
   color: #333;
   opacity: 0.5;
+  visibility: visible;
 }
-.search-clear:hover,
-.search-clear:active {
+.suggestible-input-clear:hover,
+.suggestible-input-clear:active {
   opacity: 1;
 }
-.search-clear.disabled {
+.suggestible-input-clear.disabled {
   display: none;
+  opacity: 0;
   visibility: hidden;
 }
 
 .suggestible-input-suggestions {
-  z-index: 9000; /* on top of everything */
+  z-index: 9000;
   position: absolute;
   top: 45px;
   left: 0;

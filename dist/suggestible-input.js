@@ -144,7 +144,8 @@ var SuggestibleInput = _react2['default'].createClass({
     maxSuggestions: _react2['default'].PropTypes.number,
     onChange: _react2['default'].PropTypes.func,
     value: _react2['default'].PropTypes.string,
-    placeholder: _react2['default'].PropTypes.string
+    placeholder: _react2['default'].PropTypes.string,
+    clearOnSelect: _react2['default'].PropTypes.bool
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -152,7 +153,8 @@ var SuggestibleInput = _react2['default'].createClass({
       suggestions: [],
       maxSuggestions: 10,
       value: undefined, // If no value is defined, then don't set a value.
-      placeholder: ''
+      placeholder: '',
+      clearOnSelect: false
     };
   },
 
@@ -220,7 +222,15 @@ var SuggestibleInput = _react2['default'].createClass({
     var suggestion = e.target.dataset.suggestion;
     var inputElement = this.refs.inputField.getDOMNode();
 
-    this.clearInput();
+    if (this.props.clearOnSelect) {
+      this.clearInput();
+    } else {
+      //inputElement.value = suggestion;
+      this.setState({
+        input: suggestion,
+        recentlyChoseSuggestion: true
+      });
+    }
 
     // If the caller has specified a callback for onChoose, call that after
     // selecting a new suggestion, otherwise, focus on the input field with
@@ -231,8 +241,8 @@ var SuggestibleInput = _react2['default'].createClass({
   },
 
   // Show "x" for clearing search field only if it isn't currently blank.
-  renderSearchClearClass: function renderSearchClearClass() {
-    return this.state.input ? 'search-clear' : 'search-clear disabled';
+  clearIsDisabled: function clearIsDisabled() {
+    return this.state.input ? '' : 'disabled';
   },
 
   // Return an array of JSX elements based on any matches in
@@ -287,13 +297,9 @@ var SuggestibleInput = _react2['default'].createClass({
         onKeyDown: this.onKeyDown,
         value: this.state.input,
         placeholder: this.props.placeholder }),
-      _react2['default'].createElement(
-        'button',
-        {
-          className: this.renderSearchClearClass(),
-          onClick: this.clearInput },
-        'x'
-      ),
+      _react2['default'].createElement('button', {
+        className: 'suggestible-input-clear ' + this.clearIsDisabled(),
+        onClick: this.clearInput }),
       _react2['default'].createElement('br', null),
       suggestionsHtml
     );
