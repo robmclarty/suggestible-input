@@ -21,14 +21,14 @@ it in your own React build process (e.g., using
 
 ## Usage
 
-SuggestibleInput is a drop-in replacement for regular `<input>` tags. You can
-include all the properties you would normally include on an `<input>`, plus a
-few extras. It should behave as you would expect an `<input>` to behave with
-the added bonus of giving users the ability to complete their text input from
-a list of helpful suggestions.
+SuggestibleInput is a drop-in replacement for regular `<input>` tags in your
+React app. You can include all the properties you would normally include on an
+`<input>`, plus a few extras. It should behave as you would expect an `<input>`
+to behave with the added bonus of giving users the ability to complete their
+text input from a list of helpful suggestions.
 
-The simplest way of using it is to require it, and then simply render it by
-passing it an array of strings (the suggestions):
+The simplest way of using it is to require it, and then render it by passing it
+an array of strings (the suggestions):
 
 ```javascript
 var SuggestibleInput = require('suggestible-input');
@@ -67,8 +67,9 @@ A combination of filters get used to shorten the list of suggestions and sort
 them based on a heuristic relevance.
 
 1. Find a subset of suggestions that match what you've typed based on a simple
-algorithm which finds suggestions strings that match your query string in terms
-of containing the characters of the query string, in the order that they appear.
+algorithm which finds suggestion strings that match your query string in terms
+of containing the characters of the query string, in the order that they appear
+(not necessarily in sequence).
 
 2. Rank each suggestion in the subset based on how different it is from the
 query string (that is, how many edits it would take to change the suggestion
