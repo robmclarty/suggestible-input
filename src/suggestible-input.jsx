@@ -97,7 +97,7 @@ function matches(query, suggestions) {
 // string along with an associated distance which is the levenshtein distance
 // between `query` and the string.
 //
-// This is an optimization so that the distance calculation is only every done
+// This is an optimization so that the distance calculation is only ever done
 // once per string so that the byDistance() sorting coparator (below) doesn't
 // go crazy and lag the user's input.
 function distanceToQuery(query) {
@@ -112,10 +112,10 @@ function distanceToQuery(query) {
 // Sort an array of objects created by distanceToQuery based on their distances.
 function byDistance(a, b) {
   if (a.distance < b.distance) {
-    return -1;
+    return 1;
   }
   if (a.distance > b.distance) {
-    return 1;
+    return -1;
   }
 
   return 0;
@@ -243,6 +243,10 @@ const SuggestibleInput = React.createClass({
   // (e.g., "Toronto" should be more relevant than "Victoria" for the input "tor").
   renderSuggestions: function (input) {
     let clickHandler = this.chooseSuggestion;
+
+    console.log(matches(input, this.props.suggestions)
+      .map(distanceToQuery(input))
+      .sort(byDistance));
 
     return matches(input, this.props.suggestions)
       .map(distanceToQuery(input))

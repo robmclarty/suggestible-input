@@ -105,7 +105,7 @@ function matches(query, suggestions) {
 // string along with an associated distance which is the levenshtein distance
 // between `query` and the string.
 //
-// This is an optimization so that the distance calculation is only every done
+// This is an optimization so that the distance calculation is only ever done
 // once per string so that the byDistance() sorting coparator (below) doesn't
 // go crazy and lag the user's input.
 function distanceToQuery(query) {
@@ -120,10 +120,10 @@ function distanceToQuery(query) {
 // Sort an array of objects created by distanceToQuery based on their distances.
 function byDistance(a, b) {
   if (a.distance < b.distance) {
-    return -1;
+    return 1;
   }
   if (a.distance > b.distance) {
-    return 1;
+    return -1;
   }
 
   return 0;
@@ -175,10 +175,10 @@ var SuggestibleInput = _react2['default'].createClass({
   // Finally, if there was an onChange() callback passed in the props, call
   // that at the end so that the parent can update as expected.
   onChange: function onChange(e) {
-    var input = this.refs.inputField.getDOMNode().value;
+    var inputValue = this.refs.inputField.getDOMNode().value;
 
     this.setState({
-      input: input,
+      input: inputValue,
       recentlyChoseSuggestion: false
     });
 
@@ -204,6 +204,7 @@ var SuggestibleInput = _react2['default'].createClass({
   // suggestion drop-down selection).
   closeSuggestions: function closeSuggestions(e) {
     e.preventDefault();
+
     this.setState({
       recentlyChoseSuggestion: true
     });
@@ -220,12 +221,10 @@ var SuggestibleInput = _react2['default'].createClass({
     e.preventDefault();
 
     var suggestion = e.target.dataset.suggestion;
-    var inputElement = this.refs.inputField.getDOMNode();
 
     if (this.props.clearOnSelect) {
       this.clearInput();
     } else {
-      //inputElement.value = suggestion;
       this.setState({
         input: suggestion,
         recentlyChoseSuggestion: true
@@ -251,6 +250,8 @@ var SuggestibleInput = _react2['default'].createClass({
   // (e.g., "Toronto" should be more relevant than "Victoria" for the input "tor").
   renderSuggestions: function renderSuggestions(input) {
     var clickHandler = this.chooseSuggestion;
+
+    console.log(matches(input, this.props.suggestions).map(distanceToQuery(input)).sort(byDistance));
 
     return matches(input, this.props.suggestions).map(distanceToQuery(input)).sort(byDistance).slice(0, this.props.maxSuggestions).map(function (suggestion, i) {
       return _react2['default'].createElement(

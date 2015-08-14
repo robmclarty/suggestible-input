@@ -10,11 +10,18 @@ let suggestions = [
   'Calgary',
   'Winnipeg',
   'Halifax',
-  'St. John',
-  'Quebec'
+  'St. John\'s',
+  'Quebec City',
+  'Fredericton',
+  'Charlottetown',
+  'Regina',
+  'Yellowknife',
+  'Iqaluit',
+  'Whitehorse',
+  'Victoria'
 ];
 
 React.render(
-  <SuggestibleInput suggestions={suggestions} />,
+  <SuggestibleInput suggestions={suggestions} placeholder="Find cities..." />,
   document.getElementById('example')
 );
