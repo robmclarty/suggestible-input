@@ -51,13 +51,13 @@ You can style the component any way you like by simply implementing the followin
 CSS classes and elements.
 
 Element | Description
------------------------------------ | -----------
-.suggestible-input | The outer container of the whole component.
-.suggestible-input > input | The actual input element used for entering text.
-.suggestible-input-clear | A button used to clear the value of the input. It has no content itself and is intended to be given a background-image for graphics.
-.suggestible-input-suggestions | A `<ul>` element which is the list of suggestions.
-.suggestible-input-suggestions > li | An individual suggestion in the list.
-.suggestible-input-bg | A background overlay that can be used to block, or dim, anything underneath the component while the suggestions are being shown.
+------- | -----------
+`.suggestible-input` | The outer container of the whole component.
+`.suggestible-input > input` | The actual input element used for entering text.
+`.suggestible-input-clear` | A button used to clear the value of the input. It has no content itself and is intended to be given a background-image for graphics.
+`.suggestible-input-suggestions` | A `<ul>` element which is the list of suggestions.
+`.suggestible-input-suggestions > li` | An individual suggestion in the list.
+`.suggestible-input-bg` | A background overlay that can be used to block, or dim, anything underneath the component while the suggestions are being shown.
 
 There is an example CSS file in `dist/` that you can use as a starting point.
 
