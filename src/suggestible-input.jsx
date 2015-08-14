@@ -19,8 +19,8 @@ function fuzzysearch(needle, haystack) {
   }
 
   // "outer" is a label for the for loop referenced by continue. This is an
-  // optimization for the V8 interpreter (see Vyacheslav Egorov's graph:
-  // https://cloud.githubusercontent.com/assets/934293/6550014/d3a86174-c5fc-11e4-8334-b2e2b0d38fad.png).
+  // optimization for the V8 interpreter. This is *not* a "good part" of JS.
+  // See Vyacheslav Egorov's graph: https://cloud.githubusercontent.com/assets/934293/6550014/d3a86174-c5fc-11e4-8334-b2e2b0d38fad.png.
   /*eslint no-labels: 0*/
   outer: for (let i = 0, j = 0; i < nlen; i++) {
     let nch = needle.charCodeAt(i);
@@ -121,6 +121,8 @@ function byDistance(a, b) {
   return 0;
 }
 
+// An React component that quacks like an HTML <input> but which includes a
+// selectable list of suggestions for filling in its value.
 const SuggestibleInput = React.createClass({
   getInitialState: function () {
     return {
@@ -243,10 +245,6 @@ const SuggestibleInput = React.createClass({
   // (e.g., "Toronto" should be more relevant than "Victoria" for the input "tor").
   renderSuggestions: function (input) {
     let clickHandler = this.chooseSuggestion;
-
-    console.log(matches(input, this.props.suggestions)
-      .map(distanceToQuery(input))
-      .sort(byDistance));
 
     return matches(input, this.props.suggestions)
       .map(distanceToQuery(input))
