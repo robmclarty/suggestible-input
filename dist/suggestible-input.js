@@ -274,10 +274,10 @@ var SuggestibleInput = _react2['default'].createClass({
       if (suggestionsList.length > 0) {
         suggestionsHtml = _react2['default'].createElement(
           'div',
-          null,
+          { className: 'suggestible-input-suggestions' },
           _react2['default'].createElement(
             'ul',
-            { className: 'suggestible-input-suggestions' },
+            null,
             suggestionsList
           ),
           _react2['default'].createElement('div', {
@@ -301,7 +301,6 @@ var SuggestibleInput = _react2['default'].createClass({
       _react2['default'].createElement('button', {
         className: 'suggestible-input-clear ' + this.clearIsDisabled(),
         onClick: this.clearInput }),
-      _react2['default'].createElement('br', null),
       suggestionsHtml
     );
   }

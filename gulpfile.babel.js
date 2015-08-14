@@ -4,8 +4,9 @@ import gulp from 'gulp';
 import babel from 'gulp-babel';
 import concat from 'gulp-concat';
 import webpack from 'gulp-webpack';
+import merge from 'merge-stream';
 
-gulp.task('js', function () {
+gulp.task('component', function () {
   return gulp
     .src('src/suggestible-input.jsx')
     .pipe(concat('suggestible-input.js'))
@@ -14,7 +15,7 @@ gulp.task('js', function () {
 });
 
 gulp.task('examples', function () {
-  return gulp
+  var examplesBasicJS = gulp
     .src('examples/src/basic/basic.jsx')
     .pipe(webpack({
       output: {
@@ -30,12 +31,16 @@ gulp.task('examples', function () {
       }
     }))
     .pipe(gulp.dest('examples/dist/basic/'));
-});
 
-gulp.task('css', function () {
-  return gulp
-    .src('src/suggestible-input.css')
-    .pipe(gulp.dest('dist/'));
+  var examplesBasicStatics = gulp
+    .src([
+      'examples/src/basic/basic.css',
+      'examples/src/basic/close-round.svg',
+      'examples/src/basic/index.html'
+    ])
+    .pipe(gulp.dest('examples/dist/basic/'));
+
+  return merge(examplesBasicJS, examplesBasicStatics);
 });
 
 gulp.task('test', function () {
@@ -46,6 +51,6 @@ gulp.task('lint', function () {
 
 });
 
-gulp.task('build', ['js', 'examples', 'css']);
+gulp.task('build', ['component', 'examples']);
 
 gulp.task('default', ['build']);

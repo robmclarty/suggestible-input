@@ -270,8 +270,8 @@ const SuggestibleInput = React.createClass({
 
       if (suggestionsList.length > 0) {
         suggestionsHtml = (
-          <div>
-            <ul className="suggestible-input-suggestions">
+          <div className="suggestible-input-suggestions">
+            <ul>
               {suggestionsList}
             </ul>
             <div
@@ -295,7 +295,6 @@ const SuggestibleInput = React.createClass({
         <button
           className={`suggestible-input-clear ${this.clearIsDisabled()}`}
           onClick={this.clearInput}></button>
-        <br />
         {suggestionsHtml}
       </div>
     );

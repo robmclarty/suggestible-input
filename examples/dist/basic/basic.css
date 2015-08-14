@@ -1,3 +1,4 @@
+/* Component wrapper */
 .suggestible-input {
   position: relative;
   display: inline-block;
@@ -6,6 +7,7 @@
   box-sizing: border-box;
 }
 
+/* Actual input element */
 .suggestible-input > input {
   z-index: 9001;
   position: absolute;
@@ -22,23 +24,32 @@
   border-color: #66cc00;
 }
 
+/* Clear button */
 .suggestible-input-clear {
   z-index: 9005;
   display: block;
   position: absolute;
-  top: 12px;
-  right: 15px;
+  top: 9px;
+  right: 10px;
   width: 13px;
   height: 13px;
   border: none;
-  background: transparent;
+  background-color: transparent;
+  background-image: url('close-round.svg');
+  background-size: 12px;
+  background-position: 0 0;
+  background-repeat: no-repeat;
   color: #333;
   opacity: 0.5;
   visibility: visible;
+  outline: 0;
 }
 .suggestible-input-clear:hover,
-.suggestible-input-clear:active {
+.suggestible-input-clear:active,
+.suggestible-input-clear:focus {
   opacity: 1;
+  cursor: pointer;
+  outline: 0;
 }
 .suggestible-input-clear.disabled {
   display: none;
@@ -46,7 +57,12 @@
   visibility: hidden;
 }
 
+/* Suggestions container */
 .suggestible-input-suggestions {
+  display: block;
+  margin-top: 10px;
+}
+.suggestible-input-suggestions > ul {
   z-index: 9000;
   position: absolute;
   top: 45px;
@@ -60,16 +76,16 @@
   border: 1px solid #e2e2e2;
   box-shadow: 0 0 30px 0 rgba(0, 0, 0, .1);
 }
-.suggestible-input-suggestions > li {
+.suggestible-input-suggestions > ul > li {
   background: none;
   padding: 10px;
   cursor: pointer;
   border-bottom: 1px solid #e2e2e2;
 }
-.suggestible-input-suggestions > li:last-child {
+.suggestible-input-suggestions > ul > li:last-child {
   border-bottom: none;
 }
-.suggestible-input-suggestions > li:hover {
+.suggestible-input-suggestions > ul > li:hover {
   background-color: #f6f6f6;
 }
 

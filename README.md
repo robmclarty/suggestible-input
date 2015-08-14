@@ -55,11 +55,29 @@ Element | Description
 .suggestible-input | The outer container of the whole component.
 .suggestible-input > input | The actual input element used for entering text.
 .suggestible-input-clear | A button used to clear the value of the input. It has no content itself and is intended to be given a background-image for graphics.
-.suggestible-input-suggestions | A `<ul>` element which is the list of suggestions.
-.suggestible-input-suggestions > li | An individual suggestion in the list.
+.suggestible-input-suggestions | A container that wraps the list of suggestions + a background overlay.
+.suggestible-input-suggestions > ul | The list of suggestions.
+.suggestible-input-suggestions > ul > li | An individual suggestion in the list.
 .suggestible-input-bg | A background overlay that can be used to block, or dim, anything underneath the component while the suggestions are being shown.
 
-There is an example CSS file in `dist/` that you can use as a starting point.
+The basic HTML markup structure looks like this when it is output to the DOM:
+
+```markup
+<div class="suggestible-input">
+  <input type="text" />
+  <button class="suggestible-input-clear"></button>
+  <div class="suggestible-input-suggestions">
+    <ul>
+      <li>First Suggestion</li>
+      <li>Second Suggestion</li>
+      <li>Third Suggestion</li>
+    </ul>
+    <div class="suggestible-input-bg"></div>
+  </div>
+</div>
+```
+
+There is example CSS in `examples/dist/` that you can use as a starting point.
 
 ## How it works
 
@@ -94,3 +112,11 @@ onKeyDown | function | null | Used to hook into onKeyDown events of the input.
 ## Dependencies
 
 React >= 0.13
+
+## Acknowledgements
+
+The initial pattern matching algorithm is based on [fuzzysearch](https://github.com/bevacqua/fuzzysearch).
+
+The JS implementation of the Levenshtein algorithm is based on [fuzzyset](https://github.com/Glench/fuzzyset.js).
+
+The "x" icon used in the examples is from [ionicons](https://github.com/driftyco/ionicons).
