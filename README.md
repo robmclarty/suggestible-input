@@ -65,6 +65,7 @@ into the query string).
 ## Settings
 
 Option | Type | Default | Description
+------ | ---- | ------- | -----------
 value | string | '' | Used to set the initial value of the input.
 suggestions | array | [] | An array of strings used as the source of the suggestions that are displayed.
 maxSuggestions | number | 10 | The maximum number of suggestions to display at one time.
