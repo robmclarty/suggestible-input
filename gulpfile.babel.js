@@ -24,6 +24,9 @@ gulp.task('examples', function () {
         loaders: [
           { test: /\.jsx$/, loader: 'babel-loader' }
         ]
+      },
+      externals: {
+        'react': 'React'
       }
     }))
     .pipe(gulp.dest('examples/dist/basic/'));
