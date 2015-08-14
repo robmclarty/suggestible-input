@@ -62,7 +62,7 @@ Element | Description
 
 The basic HTML markup structure looks like this when it is output to the DOM:
 
-```markup
+```html
 <div class="suggestible-input">
   <input type="text" />
   <button class="suggestible-input-clear"></button>
