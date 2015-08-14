@@ -30,7 +30,7 @@ a list of helpful suggestions.
 The simplest way of using it is to require it, and then simply render it by
 passing it an array of strings (the suggestions):
 
-```
+```javascript
 var SuggestibleInput = require('suggestible-input');
 
 var suggestions = [
@@ -44,6 +44,22 @@ var suggestions = [
 
 <SuggestibleInput suggestions={suggestions} />
 ```
+
+## Styling
+
+You can style the component any way you like by simply implementing the following
+CSS classes and elements.
+
+Element | Description
+------- | -----------
+.suggestible-input | The outer container of the whole component.
+.suggestible-input > input | The actual input element used for entering text.
+.suggestible-input-clear | A button used to clear the value of the input. It has no content itself and is intended to be given a background-image for graphics.
+.suggestible-input-suggestions | A `<ul>` elements which is the list of suggestions.
+.suggestible-input-suggestions > li | An individual suggestion in the list.
+.suggestible-input-bg | A background overlay that can be used to block, or dim, anything underneath the component while the suggestions are being shown.
+
+There is an example CSS file in `dist/` that you can use as a starting point.
 
 ## How it works
 
@@ -73,3 +89,7 @@ placeholder | string | '' | The value of the input's placeholder, shown when the
 clearOnSelect | boolean | false | Whether or not to clear the input's value when selecting a suggestion.
 onChange | function | null | Used to hook into onChange events of the input.
 onKeyDown | function | null | Used to hook into onKeyDown events of the input.
+
+## Dependencies
+
+React >= 0.13
