@@ -22,11 +22,10 @@ it in your own React build process (e.g., using
 
 ## Usage
 
-SuggestibleInput is a drop-in replacement for regular `<input>` tags in your
-React app. You can include all the properties you would normally include on an
-`<input>`, plus a few extras. It should behave as you would expect an `<input>`
-to behave with the added bonus of giving users the ability to complete their
-text input from a list of helpful suggestions.
+Use SuggestibleInput where you would use a regular `<input>` tag in your React
+app.  It will behave as you would expect an `<input>` to behave with the added
+bonus of giving users the ability to complete their text input from a list of
+helpful suggestions.
 
 The simplest way of using it is to require it, and then render it by passing it
 an array of strings (the suggestions):
