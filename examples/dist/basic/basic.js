@@ -192,16 +192,16 @@
 	// Sort an array of objects created by distanceToQuery based on their distances.
 	function byDistance(a, b) {
 	  if (a.distance < b.distance) {
-	    return 1;
+	    return -1;
 	  }
 	  if (a.distance > b.distance) {
-	    return -1;
+	    return 1;
 	  }
 
 	  return 0;
 	}
 
-	// An React component that quacks like an HTML <input> but which includes a
+	// A React component that quacks like an HTML <input> but which includes a
 	// selectable list of suggestions for filling in its value.
 	var SuggestibleInput = _react2['default'].createClass({
 	  displayName: 'SuggestibleInput',

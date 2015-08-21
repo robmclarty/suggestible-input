@@ -112,10 +112,10 @@ function distanceToQuery(query) {
 // Sort an array of objects created by distanceToQuery based on their distances.
 function byDistance(a, b) {
   if (a.distance < b.distance) {
-    return 1;
+    return -1;
   }
   if (a.distance > b.distance) {
-    return -1;
+    return 1;
   }
 
   return 0;
