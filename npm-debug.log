@@ -1,0 +1,119 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'publish', '.' ]
+2 info using npm@2.10.1
+3 info using node@v0.12.4
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec { raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/Users/robertmclarty/in_progress/suggestible-input',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /Users/robertmclarty/.npm/suggestible-input/0.0.9/package.tgz not in flight; packing
+9 verbose tar pack [ '/Users/robertmclarty/.npm/suggestible-input/0.0.9/package.tgz',
+9 verbose tar pack   '/Users/robertmclarty/in_progress/suggestible-input' ]
+10 verbose tarball /Users/robertmclarty/.npm/suggestible-input/0.0.9/package.tgz
+11 verbose folder /Users/robertmclarty/in_progress/suggestible-input
+12 info prepublish suggestible-input@0.0.9
+13 verbose unsafe-perm in lifecycle true
+14 verbose addLocalTarball adding from inside cache /Users/robertmclarty/.npm/suggestible-input/0.0.9/package.tgz
+15 silly cache afterAdd suggestible-input@0.0.9
+16 verbose afterAdd /Users/robertmclarty/.npm/suggestible-input/0.0.9/package/package.json not in flight; writing
+17 verbose afterAdd /Users/robertmclarty/.npm/suggestible-input/0.0.9/package/package.json written
+18 silly publish { name: 'suggestible-input',
+18 silly publish   version: '0.0.9',
+18 silly publish   description: 'A React component for providing as-you-type suggestions while filling out an input field.',
+18 silly publish   main: 'dist/suggestible-input.js',
+18 silly publish   author:
+18 silly publish    { name: 'Rob McLarty',
+18 silly publish      email: 'r@robmclarty.com',
+18 silly publish      url: 'http://robmclarty.com' },
+18 silly publish   license: 'MIT',
+18 silly publish   homepage: 'https://github.com/robmclarty/suggestible-input',
+18 silly publish   scripts: { build: 'gulp build', prepublish: 'npm run build' },
+18 silly publish   peerDependencies: { react: '>=0.13.0 <0.15.0 || 0.14.0-beta1' },
+18 silly publish   devDependencies:
+18 silly publish    { babel: '^5.8.21',
+18 silly publish      'babel-core': '^5.8.22',
+18 silly publish      'babel-loader': '^5.3.2',
+18 silly publish      gulp: '^3.9.0',
+18 silly publish      'gulp-babel': '^5.2.0',
+18 silly publish      'gulp-concat': '^2.6.0',
+18 silly publish      'gulp-minify-css': '^1.2.0',
+18 silly publish      'gulp-uglify': '^1.2.0',
+18 silly publish      'gulp-webpack': '^1.5.0',
+18 silly publish      'merge-stream': '^1.0.0',
+18 silly publish      'object-assign': '^3.0.0',
+18 silly publish      react: '^0.13.3',
+18 silly publish      webpack: '^1.11.0' },
+18 silly publish   keywords:
+18 silly publish    [ 'react-component',
+18 silly publish      'react',
+18 silly publish      'component',
+18 silly publish      'suggestions',
+18 silly publish      'input',
+18 silly publish      'fuzzy',
+18 silly publish      'search',
+18 silly publish      'autocomplete' ],
+18 silly publish   repository:
+18 silly publish    { type: 'git',
+18 silly publish      url: 'git+https://github.com/robmclarty/suggestible-input.git' },
+18 silly publish   bugs: { url: 'https://github.com/robmclarty/suggestible-input/issues' },
+18 silly publish   readme: '# Suggestible Input\n\nA [React](http://facebook.github.io/react/index.html)\ncomponent that quacks like an HTML `<input>` but which includes a selectable list\nof suggestions for filling in its value.\n\n![screenshot](https://github.com/robmclarty/suggestible-input/raw/master/screenshot.png)\n\nAs you type text into the input field, a list of suggestions will be displayed\nin a selectable overlay just below. The suggestions are an array of strings\ngiven to the component as a prop and are compared to the ever-changing query\nstring that you are typing. The "closer" a suggestion is to what you have typed,\nthe higher in the list it will appear.\n\n## Installation\n\nThe easiest way to use SuggestibleInput is to install it from NPM and include\nit in your own React build process (e.g., using\n[Browserify](http://browserify.org/) or [Webpack](http://webpack.github.io/))\n\n`npm install suggestible-input --save`\n\n## Usage\n\nUse SuggestibleInput where you would use a regular `<input>` tag in your React\napp.  It will behave as you would expect an `<input>` to behave with the added\nbonus of giving users the ability to complete their text input from a list of\nhelpful suggestions.\n\nThe simplest way of using it is to require it, and then render it by passing it\nan array of strings (the suggestions):\n\n```javascript\nvar SuggestibleInput = require(\'suggestible-input\');\n\nvar suggestions = [\n  \'Toronto\',\n  \'Montreal\',\n  \'Ottawa\',\n  \'Vancouver\',\n  \'Edmonton\',\n  \'Calgary\'\n];\n\n<SuggestibleInput suggestions={suggestions} />\n```\n\n## Styling\n\nYou can style the component any way you like by simply implementing the following\nCSS classes and elements.\n\nElement | Description\n------- | -----------\n.suggestible-input | The outer container of the whole component.\n.suggestible-input > input | The actual input element used for entering text.\n.suggestible-input-clear | A button used to clear the value of the input. It has no content itself and is intended to be given a background-image for graphics.\n.suggestible-input-suggestions | A container that wraps the list of suggestions + a background overlay.\n.suggestible-input-suggestions > ul | The list of suggestions.\n.suggestible-input-suggestions > ul > li | An individual suggestion in the list.\n.suggestible-input-bg | A background overlay that can be used to block, or dim, anything underneath the component while the suggestions are being shown.\n\nThe basic HTML markup structure looks like this when it is output to the DOM:\n\n```html\n<div class="suggestible-input">\n  <input type="text" />\n  <button class="suggestible-input-clear"></button>\n  <div class="suggestible-input-suggestions">\n    <ul>\n      <li>First Suggestion</li>\n      <li>Second Suggestion</li>\n      <li>Third Suggestion</li>\n    </ul>\n    <div class="suggestible-input-bg"></div>\n  </div>\n</div>\n```\n\nThere is example CSS in `examples/dist/` that you can use as a starting point.\n\n## How it works\n\nA combination of filters get used to shorten the list of suggestions and sort\nthem based on a heuristic relevance.\n\n1. Find a subset of suggestions that match what you\'ve typed based on a simple\nalgorithm which finds suggestion strings that match your query string in terms\nof containing the characters of the query string, in the order that they appear\n(not necessarily in sequence).\n\n2. Rank each suggestion in the subset based on how different it is from the\nquery string (that is, how many edits it would take to change the suggestion\ninto the query string).\n\n3. Sort the subset list based on their rankings.\n\n4. Cut off the list at the user-defined maximum (or 10, by default).\n\n## Settings\n\nOption | Type | Default | Description\n------ | ---- | ------- | -----------\nvalue | string | \'\' | Used to set the initial value of the input.\nsuggestions | array | [] | An array of strings used as the source of the suggestions that are displayed.\nmaxSuggestions | number | 10 | The maximum number of suggestions to display at one time.\nplaceholder | string | \'\' | The value of the input\'s placeholder, shown when there is no value.\nclearOnSelect | boolean | false | Whether or not to clear the input\'s value when selecting a suggestion.\nonChange | function | null | Used to hook into onChange events of the input.\nonKeyDown | function | null | Used to hook into onKeyDown events of the input.\n\n## Dependencies\n\nReact >= 0.13\n\n## Acknowledgements\n\nThe initial pattern matching algorithm is based on [fuzzysearch](https://github.com/bevacqua/fuzzysearch).\n\nThe JS implementation of the Levenshtein algorithm is based on [fuzzyset](https://github.com/Glench/fuzzyset.js).\n\nThe "x" icon used in the examples is from [ionicons](https://github.com/driftyco/ionicons).\n',
+18 silly publish   readmeFilename: 'README.md',
+18 silly publish   gitHead: '6cf33e0f91ae71d2b7151888d34897788793fec8',
+18 silly publish   _id: 'suggestible-input@0.0.9',
+18 silly publish   _shasum: '28bfcaf3d9223bbabcf30bcf38296b35ae925a00',
+18 silly publish   _from: '.' }
+19 verbose getPublishConfig undefined
+20 silly mapToRegistry name suggestible-input
+21 silly mapToRegistry using default registry
+22 silly mapToRegistry registry https://registry.npmjs.org/
+23 silly mapToRegistry uri https://registry.npmjs.org/suggestible-input
+24 verbose publish registryBase https://registry.npmjs.org/
+25 silly publish uploading /Users/robertmclarty/.npm/suggestible-input/0.0.9/package.tgz
+26 verbose request uri https://registry.npmjs.org/suggestible-input
+27 verbose request sending authorization for write operation
+28 info attempt registry request try #1 at 12:55:19 PM
+29 verbose request using bearer token for auth
+30 verbose request id d3a50b85332147d5
+31 http request PUT https://registry.npmjs.org/suggestible-input
+32 http 403 https://registry.npmjs.org/suggestible-input
+33 verbose headers { 'content-type': 'application/json',
+33 verbose headers   'cache-control': 'max-age=60',
+33 verbose headers   'content-length': '95',
+33 verbose headers   'accept-ranges': 'bytes',
+33 verbose headers   date: 'Fri, 21 Aug 2015 16:55:19 GMT',
+33 verbose headers   via: '1.1 varnish',
+33 verbose headers   connection: 'keep-alive',
+33 verbose headers   'x-served-by': 'cache-dfw1826-DFW',
+33 verbose headers   'x-cache': 'MISS',
+33 verbose headers   'x-cache-hits': '0',
+33 verbose headers   'x-timer': 'S1440176119.390518,VS0,VE333' }
+34 verbose request invalidating /Users/robertmclarty/.npm/registry.npmjs.org/suggestible-input on PUT
+35 error publish Failed PUT 403
+36 verbose stack Error: "You cannot publish over the previously published version 0.0.9." : suggestible-input
+36 verbose stack     at CachingRegistryClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:247:14)
+36 verbose stack     at Request._callback (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:170:14)
+36 verbose stack     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:368:22)
+36 verbose stack     at Request.emit (events.js:110:17)
+36 verbose stack     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1219:14)
+36 verbose stack     at Request.emit (events.js:129:20)
+36 verbose stack     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1167:12)
+36 verbose stack     at IncomingMessage.emit (events.js:129:20)
+36 verbose stack     at _stream_readable.js:908:16
+36 verbose stack     at process._tickCallback (node.js:355:11)
+37 verbose statusCode 403
+38 verbose pkgid suggestible-input
+39 verbose cwd /Users/robertmclarty/in_progress/suggestible-input
+40 error Darwin 14.4.0
+41 error argv "node" "/usr/local/bin/npm" "publish" "."
+42 error node v0.12.4
+43 error npm  v2.10.1
+44 error code E403
+45 error "You cannot publish over the previously published version 0.0.9." : suggestible-input
+46 error If you need help, you may report this error at:
+46 error     <https://github.com/npm/npm/issues>
+47 verbose exit [ 1, true ]

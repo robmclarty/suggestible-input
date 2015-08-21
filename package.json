@@ -1,6 +1,6 @@
 {
   "name": "suggestible-input",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "A React component for providing as-you-type suggestions while filling out an input field.",
   "main": "dist/suggestible-input.js",
   "author": "Rob McLarty <r@robmclarty.com> (http://robmclarty.com)",
