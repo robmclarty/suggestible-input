@@ -1,12 +1,11 @@
 {
   "name": "suggestible-input",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A React component for providing as-you-type suggestions while filling out an input field.",
   "main": "dist/suggestible-input.js",
-  "author": "Rob McLarty",
+  "author": "Rob McLarty <r@robmclarty.com> (http://robmclarty.com)",
   "license": "MIT",
   "scripts": {
-    "test": "gulp test",
     "build": "gulp build",
     "prepublish": "npm run build"
   },
@@ -40,7 +39,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/robmclarty/suggestible-input.git"
+    "url": "https://github.com/robmclarty/suggestible-input.git"
   },
   "bugs": {
     "url": "https://github.com/robmclarty/suggestible-input/issues"
