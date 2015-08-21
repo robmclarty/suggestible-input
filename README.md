@@ -4,7 +4,7 @@ A [React](http://facebook.github.io/react/index.html)
 component that quacks like an HTML `<input>` but which includes a selectable list
 of suggestions for filling in its value.
 
-![screenshot](screenshot.png)
+![screenshot](https://github.com/robmclarty/suggestible-input/raw/master/screenshot.png)
 
 As you type text into the input field, a list of suggestions will be displayed
 in a selectable overlay just below. The suggestions are an array of strings
