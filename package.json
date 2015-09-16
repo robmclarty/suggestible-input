@@ -1,6 +1,6 @@
 {
   "name": "suggestible-input",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "A React component for providing as-you-type suggestions while filling out an input field.",
   "main": "dist/suggestible-input.js",
   "author": "Rob McLarty <r@robmclarty.com> (http://robmclarty.com)",
@@ -11,7 +11,7 @@
     "prepublish": "npm run build"
   },
   "peerDependencies": {
-    "react": ">=0.13.0 <0.15.0 || 0.14.0-beta1 || 0.14.0-beta2 || 0.14.0-beta3 || 0.14.0-rc1"
+    "react": ">=0.13.0 <0.15.0 || ^0.14.0-rc1"
   },
   "devDependencies": {
     "babel": "^5.8.21",
