@@ -177,7 +177,7 @@ var SuggestibleInput = _react2['default'].createClass({
   // Finally, if there was an onChange() callback passed in the props, call
   // that at the end so that the parent can update as expected.
   onChange: function onChange(e) {
-    var inputValue = this.refs.inputField.getDOMNode().value;
+    var inputValue = this.refs.inputField.value;
 
     this.setState({
       input: inputValue,
