@@ -18,7 +18,7 @@ function fuzzysearch(needle, haystack) {
     return needle === haystack;
   }
 
-  // "outer" is a label for the for loop referenced by continue. This is an
+  // `outer` is a label for the for loop referenced by continue. This is an
   // optimization for the V8 interpreter. This is *not* a "good part" of JS.
   // See Vyacheslav Egorov's graph: https://cloud.githubusercontent.com/assets/934293/6550014/d3a86174-c5fc-11e4-8334-b2e2b0d38fad.png.
   /*eslint no-labels: 0*/
@@ -143,28 +143,30 @@ function byDistance(a, b) {
 const SuggestibleInput = React.createClass({
   getInitialState: function () {
     return {
-      input: '',
-      recentlyChoseSuggestion: false
+      input: '', // The actual value of the input, can be updated through typing, or selecting a suggestion.
+      recentlyChoseSuggestion: false, // A flag to determine if a suggestion was just chosen, or not (helps optimize rendering).
+      suggestionsArePlainStrings: true // Determines if we should treat each suggestion as a plain string, or as an object.
     };
   },
 
   propTypes: {
     suggestions: React.PropTypes.array,
-    maxSuggestions: React.PropTypes.number,
-    onChange: React.PropTypes.func,
-    onChoose: React.PropTypes.func,
-    onKeyDown: React.PropTypes.func,
     value: React.PropTypes.string,
     placeholder: React.PropTypes.string,
-    clearOnSelect: React.PropTypes.bool
+    clearOnSelect: React.PropTypes.bool,
+    maxSuggestions: React.PropTypes.number,
+
+    onChoose: React.PropTypes.func,
+    onChange: React.PropTypes.func,
+    onKeyDown: React.PropTypes.func
   },
 
   getDefaultProps: function () {
     return {
       suggestions: [],
-      maxSuggestions: 10,
       value: undefined, // If no value is defined, then don't set a value.
       placeholder: '',
+      maxSuggestions: 10,
       clearOnSelect: false
     };
   },
@@ -177,10 +179,24 @@ const SuggestibleInput = React.createClass({
   },
 
   componentWillReceiveProps: function (nextProps) {
+    let firstSuggestion = nextProps.suggestions[0];
+
+    // If the first element of `suggestions` exists, and it is an object that has
+    // a property `name`, then set the flag this.state.suggestionsArePlainStrings to false.
+    // It is assumed that all elements of `suggestions` are similar to the first.
+    if (firstSuggestion && firstSuggestion.hasOwnProperty('name')) {
+      this.setState({ suggestionsArePlainStrings: false });
+    }
+
+    // If the first element of `suggestions` exists, and it is a plain string,
+    // the set the flag to true.
+    if (firstSuggestion && typeof firstSuggestion === 'string') {
+      this.setState({ suggestionsArePlainStrings: true });
+    }
+
+    // If an explicit value is passed to the component, set `input` as the value.
     if (nextProps.value !== undefined) {
-      this.setState({
-        input: nextProps.value
-      });
+      this.setState({ input: nextProps.value });
     }
   },
 
@@ -217,11 +233,8 @@ const SuggestibleInput = React.createClass({
   // behave *as if* a suggestion had recently been chosen (i.e., hide the
   // suggestion drop-down selection).
   closeSuggestions: function (e) {
+    this.setState({ recentlyChoseSuggestion: true });
     e.preventDefault();
-
-    this.setState({
-      recentlyChoseSuggestion: true
-    });
   },
 
   clearInput: function (e) {
@@ -232,9 +245,9 @@ const SuggestibleInput = React.createClass({
   },
 
   chooseSuggestion: function (e) {
-    e.preventDefault();
-
     let suggestion = e.target.dataset.suggestion;
+
+    e.preventDefault();
 
     if (this.props.clearOnSelect) {
       this.clearInput();
@@ -258,8 +271,7 @@ const SuggestibleInput = React.createClass({
     return this.state.input ? '' : 'disabled';
   },
 
-  // Return an array of JSX elements based on any matches in
-  // this.props.suggestions to the value of input.
+  // Return an array of JSX elements based on any matches in this.props.suggestions to the value of input.
   // Sort by simple heuristic: if input is closer to the beginning of the suggestion string
   // (e.g., "Toronto" should be more relevant than "Victoria" for the input "tor").
   renderSuggestions: function (input) {
