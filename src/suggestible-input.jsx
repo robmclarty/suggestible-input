@@ -121,8 +121,25 @@ function byDistance(a, b) {
   return 0;
 }
 
-// A React component that quacks like an HTML <input> but which includes a
-// selectable list of suggestions for filling in its value.
+/**
+ * A React component that quacks like an HTML <input> but which includes a
+ * selectable list of suggestions for filling in its value.
+ * @param {string[]|object[]} suggestions - An array of suggestions from which to
+ *   match user input. Can be either a set of plain strings, or a set of objects
+ *   which use the following object properties.
+ * @param {string} suggestions[].name - The name of the suggestion (same meaning
+ *   as a plain string value which is used instead of objects).
+ * @param {string} [suggestions[].class] - An optional class name which will be
+ *   added to the <li> element within which the suggestion name is rendered.
+ * @param {string} [value=undefined] - The initial/default value of the input.
+ * @param {string} [placeholder=""] - A string to display inside the <input> when it is empty.
+ * @param {boolean} [clearOnSelect=false] - If true, input value is set to ""
+ *   whenever a selection is made.
+ * @param {number} [maxSuggestions=10] - Maximum suggestions to display in dropdown.
+ * @callback {function} [onChoose] - Triggered when a selection is made.
+ * @callback {function} [onChange] - Triggered any time the value of the input changes.
+ * @callback {function} [onKeyDown] - Triggered by key presses inside input.
+ */
 const SuggestibleInput = React.createClass({
   getInitialState: function () {
     return {
@@ -135,6 +152,8 @@ const SuggestibleInput = React.createClass({
     suggestions: React.PropTypes.array,
     maxSuggestions: React.PropTypes.number,
     onChange: React.PropTypes.func,
+    onChoose: React.PropTypes.func,
+    onKeyDown: React.PropTypes.func,
     value: React.PropTypes.string,
     placeholder: React.PropTypes.string,
     clearOnSelect: React.PropTypes.bool
