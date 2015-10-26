@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import SuggestibleInput from '../../../dist/suggestible-input.js';
 
 let suggestions = [
@@ -21,7 +22,7 @@ let suggestions = [
   'Victoria'
 ];
 
-React.render(
+ReactDOM.render(
   <SuggestibleInput suggestions={suggestions} placeholder="Find cities..." />,
   document.getElementById('example')
 );

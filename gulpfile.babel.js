@@ -3,6 +3,7 @@
 import gulp from 'gulp';
 import babel from 'gulp-babel';
 import concat from 'gulp-concat';
+import uglify from 'gulp-uglify';
 import webpack from 'gulp-webpack';
 import merge from 'merge-stream';
 
@@ -11,6 +12,7 @@ gulp.task('component', function () {
     .src('src/suggestible-input.jsx')
     .pipe(concat('suggestible-input.js'))
     .pipe(babel())
+    .pipe(uglify())
     .pipe(gulp.dest('dist/'));
 });
 
@@ -27,7 +29,8 @@ gulp.task('examples', function () {
         ]
       },
       externals: {
-        'react': 'React'
+        'react': 'React',
+        'react-dom': 'ReactDOM'
       }
     }))
     .pipe(gulp.dest('examples/dist/basic/'));

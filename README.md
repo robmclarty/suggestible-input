@@ -111,7 +111,7 @@ onKeyDown | function | null | Used to hook into onKeyDown events of the input.
 
 ## Dependencies
 
-React >= 0.13
+React >= 0.14
 
 ## Acknowledgements
 
