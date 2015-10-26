@@ -1,0 +1,109 @@
+/* A custom class that can be used to markup certain suggestions to apply
+a distinct style to its <li> element in the drop-down list of suggestions. */
+.my-custom-class {
+  background-color: #333;
+}
+
+/* Component wrapper */
+.suggestible-input {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 35px;
+  box-sizing: border-box;
+}
+
+/* Actual input element */
+.suggestible-input > input {
+  z-index: 9001;
+  position: absolute;
+  width: 100%;
+  margin: 0;
+  padding: 7px 30px 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  line-height: normal;
+  outline: none;
+  box-sizing: border-box;
+}
+.suggestible-input > input:focus {
+  border-color: #66cc00;
+}
+
+/* Clear button */
+.suggestible-input-clear {
+  z-index: 9005;
+  display: block;
+  position: absolute;
+  top: 9px;
+  right: 10px;
+  width: 13px;
+  height: 13px;
+  border: none;
+  background-color: transparent;
+  background-image: url('close-round.svg');
+  background-size: 12px;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  color: #333;
+  opacity: 0.5;
+  visibility: visible;
+  outline: 0;
+}
+.suggestible-input-clear:hover,
+.suggestible-input-clear:active,
+.suggestible-input-clear:focus {
+  opacity: 1;
+  cursor: pointer;
+  outline: 0;
+}
+.suggestible-input-clear.disabled {
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Suggestions container */
+.suggestible-input-suggestions {
+  display: block;
+  margin-top: 10px;
+}
+.suggestible-input-suggestions > ul {
+  z-index: 9000;
+  position: absolute;
+  top: 45px;
+  left: 0;
+  bottom: auto;
+  width: 200px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  border: 1px solid #e2e2e2;
+  box-shadow: 0 0 30px 0 rgba(0, 0, 0, .1);
+}
+.suggestible-input-suggestions > ul > li {
+  background: none;
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #e2e2e2;
+}
+.suggestible-input-suggestions > ul > li:last-child {
+  border-bottom: none;
+}
+.suggestible-input-suggestions > ul > li:hover {
+  background-color: #f6f6f6;
+}
+
+/* Used to mask out everything that's not inside the suggestible-input component
+   so that it can act as a clickable area to disengage the suggestions overlay. */
+.suggestible-input-bg {
+  z-index: 8000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  cursor: default;
+}
