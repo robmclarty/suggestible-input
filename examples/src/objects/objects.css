@@ -1,5 +1,6 @@
 /* A custom class that can be used to markup certain suggestions to apply
-a distinct style to its <li> element in the drop-down list of suggestions. */
+a distinct style to its <li> element in the drop-down list of suggestions.
+This style simply makes the text for the suggestions using this class blue. */
 .my-custom-class {
   color: blue;
 }

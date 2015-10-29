@@ -301,7 +301,7 @@ const SuggestibleInput = React.createClass({
       .map(distanceToQuery(input))
       .sort(byDistance)
       .slice(0, this.props.maxSuggestions)
-      .map(function (distancedSuggestion, i) {
+      .map((distancedSuggestion, i) => {
         let suggestion = distancedSuggestion.suggestion;
 
         return (
