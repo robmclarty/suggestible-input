@@ -27,8 +27,11 @@ app.  It will behave as you would expect an `<input>` to behave with the added
 bonus of giving users the ability to complete their text input from a list of
 helpful suggestions.
 
+### Basic
+
 The simplest way of using it is to require it, and then render it by passing it
-an array of strings (the suggestions):
+an array of strings (the suggestions). See the "basic" demo in the examples
+folder.
 
 ```javascript
 var SuggestibleInput = require('suggestible-input');
@@ -43,6 +46,45 @@ var suggestions = [
 ];
 
 <SuggestibleInput suggestions={suggestions} />
+```
+
+### Advanced
+
+More advanced usage involves passing an array of objects into the component
+(as opposed to plain strings). This allows you some additional control over the
+suggestion list output such as assigning custom classes to particular
+suggestions, as well as including extra data to pass along with the suggestion.
+
+When defining suggestions as objects, each suggestion must contain a `name`
+property. Optionally, you may pass a `class` property which is a simple string
+value that will be passed into the `<li>` element's class which contains the
+suggestion in the drop-down list (this can be one or more class names just as
+you would define them in plain HTML). Finally, you may also add any additional,
+custom, properties you like to the object. These properties can then be accessed
+in the `onChoose()` callback so that you can associate custom data with each
+suggestion.
+
+The following example demonstrates how to construct an array of suggestions as
+objects, as well as how to use some of the other props to customize how the
+component is rendered. See the "objects" demo in the examples folder.
+
+```javascript
+var SuggestibleInput = require('suggestible-input');
+
+var suggestions = [
+  { name: 'Toronto', class: 'my-custom-class', customProperty: 'my-custom-property' },
+  { name: 'Montreal' },
+  { name: 'Vancouver' },
+  { name: 'Ottawa', class: 'my-custom-class' },
+  { name: 'Edmonton', class: 'my-custom-class' },
+  { name: 'Calgary', customProperty: 'my-custom-property' }
+];
+
+<SuggestibleInput
+  suggestions={suggestions}
+  maxSuggestions={5}
+  placeholder="Find canadian cities..."
+  clearOnSelect={true} />
 ```
 
 ## Styling
@@ -77,7 +119,7 @@ The basic HTML markup structure looks like this when it is output to the DOM:
 </div>
 ```
 
-There is example CSS in `examples/dist/` that you can use as a starting point.
+There are examples in `examples/dist/` that you can use as a starting point.
 
 ## How it works
 
@@ -102,12 +144,13 @@ into the query string).
 Option | Type | Default | Description
 ------ | ---- | ------- | -----------
 value | string | '' | Used to set the initial value of the input.
-suggestions | array | [] | An array of strings used as the source of the suggestions that are displayed.
+suggestions | array | [] | An array of strings/objects used as the source of the suggestions that are displayed.
 maxSuggestions | number | 10 | The maximum number of suggestions to display at one time.
 placeholder | string | '' | The value of the input's placeholder, shown when there is no value.
 clearOnSelect | boolean | false | Whether or not to clear the input's value when selecting a suggestion.
 onChange | function | null | Used to hook into onChange events of the input.
 onKeyDown | function | null | Used to hook into onKeyDown events of the input.
+onChoose | function | null | Used to hook into onChoose events when selecting a suggestion from the dropdown.
 
 ## Dependencies
 
