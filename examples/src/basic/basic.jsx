@@ -6,6 +6,7 @@ let suggestions = [
   'Toronto',
   'Montreal',
   'Vancouver',
+  'Ber Tov Capital Corporation',
   'Ottawa',
   'Edmonton',
   'Calgary',

@@ -37,48 +37,48 @@ function fuzzysearch(needle, haystack) {
   return true;
 }
 
-// https://en.wikipedia.org/wiki/Levenshtein_distance
-// This is a modification based on https://github.com/Glench/fuzzyset.js
-function levenshtein(str1, str2) {
-  let current = [];
-  let prev;
-  let value;
+// Return the Levenstein distance between two given strings.
+// This is a modification based on https://gist.github.com/andrei-m/982927
+// What is the Levenstein distance? https://en.wikipedia.org/wiki/Levenshtein_distance
+function getEditDistance(a, b) {
+  let matrix = [];
+  let arrayA = a.split(''); // Convert string 'a' to an array of characters.
+  let arrayB = b.split(''); // Convert string 'b' to an array of characters.
 
-  str2.split('').forEach((str2Char, i) => {
-    str1.split('').forEach((str1Char, j) => {
-      if (str1.charAt(j - 1) === str2.charAt(i - 1)) {
-        value = prev;
+  if (arrayA.length === 0) {
+    return arrayB.length;
+  }
+  if (arrayB.length === 0) {
+    return arrayA.length;
+  }
+
+  // Increment along the first column of each row.
+  for (let i = 0; i <= arrayB.length; i += 1) {
+    matrix[i] = [i];
+  }
+
+  // Increment each column in the first row.
+  for (let j = 0; j <= arrayA.length; j += 1) {
+    matrix[0][j] = j;
+  }
+
+  arrayB.forEach((charB, i) => {
+    arrayA.forEach((charA, j) => {
+      if (charB === charA) {
+        matrix[i + 1][j + 1] = matrix[i][j];
       } else {
-        value = Math.min(current[j], current[j - 1], prev) + 1;
+        matrix[i + 1][j + 1] = Math.min(
+          matrix[i][j] + 1, // substitution
+          Math.min(
+            matrix[i + 1][j] + 1, // insertion
+            matrix[i][j + 1] + 1 // deletion
+          )
+        );
       }
-
-      prev = current[j];
-      current[j] = value || 0;
     });
   });
 
-  return current.pop();
-}
-
-// Return an edit distance from 0 to 1 between str1 and str2.
-function distance(str1, str2) {
-  if (str1 === null && str2 === null) {
-    throw 'Trying to compare two null values';
-  }
-  if (str1 === null || str2 === null) {
-    return 0;
-  }
-
-  str1 = String(str1);
-  str2 = String(str2);
-
-  let d = levenshtein(str1, str2);
-
-  if (str1.length > str2.length) {
-    return 1 - d / str1.length;
-  } else {
-    return 1 - d / str2.length;
-  }
+  return matrix[arrayB.length][arrayA.length];
 }
 
 // Compare `query` to the values in the array of suggestions and return an array
@@ -103,16 +103,17 @@ function matches(query, suggestions) {
 function distanceToQuery(query) {
   return function (suggestion) {
     return {
-      distance: distance(query.toLowerCase(), suggestion.name.toLowerCase()),
+      distance: getEditDistance(query.toLowerCase(), suggestion.name.toLowerCase()),
       suggestion: suggestion
     };
   };
 }
 
 // Sort an array of objects created by distanceToQuery based on their distances.
-// (ordered from highest to lowest)
+// Ordered from lowest to highest (i.e., the bigger the number, the further from
+// a match, the greater the distance, the string is).
 function byDistance(a, b) {
-  return b.distance - a.distance;
+  return a.distance - b.distance;
 }
 
 // Take an array of plain suggestion strings and return an array of those
@@ -147,13 +148,21 @@ function suggestionStringsToObjects(suggestionStrings) {
  * @callback {function} [onKeyDown] - Triggered by key presses inside input.
  */
 const SuggestibleInput = React.createClass({
-  // TODO: Consolidate all the notes about state up here above getInitialState
-  // rather than beside each property.
+
+  // The initial state of the component.
+  // suggestions - An array of suggestion objects used throughout the components
+  //   (plain strings are converted to objects before being stored here). This
+  //   ensures that throughout the component, all suggestions can be assumed to be
+  //   objects with at least one property "name".
+  // input - The actual value of the input, can be updated through typing, or
+  //   selecting a suggestion.
+  // recentlyChoseSuggestion - A flag to determine if a suggestion was just
+  //   chosen, or not (helps optimize rendering).
   getInitialState: function () {
     return {
-      suggestions: [], // An array of suggestion objects used throughout the components (plain strings are converted to objects before being stored here). This ensures that throughout the component, all suggestions can be assumed to be objects with at least one property "name".
-      input: '', // The actual value of the input, can be updated through typing, or selecting a suggestion.
-      recentlyChoseSuggestion: false // A flag to determine if a suggestion was just chosen, or not (helps optimize rendering).
+      suggestions: [],
+      input: '',
+      recentlyChoseSuggestion: false
     };
   },
 
@@ -301,8 +310,8 @@ const SuggestibleInput = React.createClass({
       .map(distanceToQuery(input))
       .sort(byDistance)
       .slice(0, this.props.maxSuggestions)
-      .map((distancedSuggestion, i) => {
-        let suggestion = distancedSuggestion.suggestion;
+      .map((suggestionWithDistance, i) => {
+        let suggestion = suggestionWithDistance.suggestion;
 
         return (
           <li

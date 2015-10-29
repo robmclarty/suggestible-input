@@ -12,7 +12,7 @@ gulp.task('component', function () {
     .src('src/suggestible-input.jsx')
     .pipe(concat('suggestible-input.js'))
     .pipe(babel())
-    .pipe(uglify())
+    //.pipe(uglify())
     .pipe(gulp.dest('dist/'));
 });
 
