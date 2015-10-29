@@ -44,8 +44,8 @@ function levenshtein(str1, str2) {
   let prev;
   let value;
 
-  str2.split('').forEach(function (str2Char, i) {
-    str1.split('').forEach(function (str1Char, j) {
+  str2.split('').forEach((str2Char, i) => {
+    str1.split('').forEach((str1Char, j) => {
       if (str1.charAt(j - 1) === str2.charAt(i - 1)) {
         value = prev;
       } else {
@@ -85,8 +85,8 @@ function distance(str1, str2) {
 // of strings that contain `query` as a substring or partially matching substring.
 function matches(query, suggestions) {
   if (query) {
-    return suggestions.filter(function (suggestion) {
-      return fuzzysearch(query.toLowerCase(), suggestion.toLowerCase());
+    return suggestions.filter((suggestion) => {
+      return fuzzysearch(query.toLowerCase(), suggestion.name.toLowerCase());
     });
   } else {
     return []; // if input is empty, return no results
@@ -103,22 +103,28 @@ function matches(query, suggestions) {
 function distanceToQuery(query) {
   return function (suggestion) {
     return {
-      distance: distance(query.toLowerCase(), suggestion.toLowerCase()),
-      value: suggestion
+      distance: distance(query.toLowerCase(), suggestion.name.toLowerCase()),
+      suggestion: suggestion
     };
   };
 }
 
 // Sort an array of objects created by distanceToQuery based on their distances.
+// (ordered from highest to lowest)
 function byDistance(a, b) {
-  if (a.distance < b.distance) {
-    return -1;
-  }
-  if (a.distance > b.distance) {
-    return 1;
-  }
+  return b.distance - a.distance;
+}
 
-  return 0;
+// Take an array of plain suggestion strings and return an array of those
+// strings in object format.
+function suggestionStringsToObjects(suggestionStrings) {
+  let suggestions = [];
+
+  suggestionStrings.forEach((suggestionString) => {
+    suggestions.push({ name: suggestionString });
+  });
+
+  return suggestions;
 }
 
 /**
@@ -141,16 +147,19 @@ function byDistance(a, b) {
  * @callback {function} [onKeyDown] - Triggered by key presses inside input.
  */
 const SuggestibleInput = React.createClass({
+  // TODO: Consolidate all the notes about state up here above getInitialState
+  // rather than beside each property.
   getInitialState: function () {
     return {
+      suggestions: [], // An array of suggestion objects used throughout the components (plain strings are converted to objects before being stored here). This ensures that throughout the component, all suggestions can be assumed to be objects with at least one property "name".
       input: '', // The actual value of the input, can be updated through typing, or selecting a suggestion.
-      recentlyChoseSuggestion: false, // A flag to determine if a suggestion was just chosen, or not (helps optimize rendering).
-      suggestionsArePlainStrings: true // Determines if we should treat each suggestion as a plain string, or as an object.
+      recentlyChoseSuggestion: false // A flag to determine if a suggestion was just chosen, or not (helps optimize rendering).
     };
   },
 
   propTypes: {
     suggestions: React.PropTypes.array,
+
     value: React.PropTypes.string,
     placeholder: React.PropTypes.string,
     clearOnSelect: React.PropTypes.bool,
@@ -161,6 +170,13 @@ const SuggestibleInput = React.createClass({
     onKeyDown: React.PropTypes.func
   },
 
+  // Example suggestion object. The elements of the suggestions array can be
+  // either a set of objects (like the following), or plain strings.
+  // {
+  //   name: 'my suggestion',
+  //   class: 'suggestion-class',
+  //   customAttribute: 'could be a primitive or an object or an array'
+  // }
   getDefaultProps: function () {
     return {
       suggestions: [],
@@ -178,20 +194,24 @@ const SuggestibleInput = React.createClass({
       nextState.recentlyChoseSuggestion !== this.state.recentlyChoseSuggestion;
   },
 
+  componentWillMount: function () {
+    this.componentWillReceiveProps(this.props);
+  },
+
   componentWillReceiveProps: function (nextProps) {
     let firstSuggestion = nextProps.suggestions[0];
 
     // If the first element of `suggestions` exists, and it is an object that has
-    // a property `name`, then set the flag this.state.suggestionsArePlainStrings to false.
-    // It is assumed that all elements of `suggestions` are similar to the first.
+    // a property `name`, then simply store those objects in the state's suggestions.
     if (firstSuggestion && firstSuggestion.hasOwnProperty('name')) {
-      this.setState({ suggestionsArePlainStrings: false });
+      this.setState({ suggestions: nextProps.suggestions });
     }
 
     // If the first element of `suggestions` exists, and it is a plain string,
-    // the set the flag to true.
+    // then convert those strings to objects before storing them in the state's
+    // suggestions array.
     if (firstSuggestion && typeof firstSuggestion === 'string') {
-      this.setState({ suggestionsArePlainStrings: true });
+      this.setState({ suggestions: suggestionStringsToObjects(nextProps.suggestions) });
     }
 
     // If an explicit value is passed to the component, set `input` as the value.
@@ -277,30 +297,33 @@ const SuggestibleInput = React.createClass({
   renderSuggestions: function (input) {
     let clickHandler = this.chooseSuggestion;
 
-    return matches(input, this.props.suggestions)
+    return matches(input, this.state.suggestions)
       .map(distanceToQuery(input))
       .sort(byDistance)
       .slice(0, this.props.maxSuggestions)
-      .map(function (suggestion, i) {
+      .map(function (distancedSuggestion, i) {
+        let suggestion = distancedSuggestion.suggestion;
+
         return (
           <li
             onClick={clickHandler}
             key={i}
-            data-suggestion={suggestion.value}>
-            {suggestion.value}
+            className={suggestion.class ? suggestion.class : ''}
+            data-suggestion={suggestion.name}>
+            {suggestion.name}
           </li>
         );
       });
   },
 
   render: function () {
-    let suggestionsHtml = '';
+    let suggestionsMarkup = '';
 
     if (!this.state.recentlyChoseSuggestion) {
       let suggestionsList = this.renderSuggestions(this.state.input);
 
       if (suggestionsList.length > 0) {
-        suggestionsHtml = (
+        suggestionsMarkup = (
           <div className="suggestible-input-suggestions">
             <ul>
               {suggestionsList}
@@ -326,7 +349,7 @@ const SuggestibleInput = React.createClass({
         <button
           className={`suggestible-input-clear ${this.clearIsDisabled()}`}
           onClick={this.clearInput}></button>
-        {suggestionsHtml}
+        {suggestionsMarkup}
       </div>
     );
   }
