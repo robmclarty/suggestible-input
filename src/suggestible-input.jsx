@@ -265,7 +265,7 @@ const SuggestibleInput = React.createClass({
   },
 
   chooseSuggestion: function (e) {
-    let suggestion = e.target.dataset.suggestion;
+    let suggestion = JSON.parse(e.target.dataset.suggestion);
 
     e.preventDefault();
 
@@ -273,7 +273,7 @@ const SuggestibleInput = React.createClass({
       this.clearInput();
     } else {
       this.setState({
-        input: suggestion,
+        input: suggestion.name,
         recentlyChoseSuggestion: true
       });
     }
@@ -309,7 +309,7 @@ const SuggestibleInput = React.createClass({
             onClick={clickHandler}
             key={i}
             className={suggestion.class ? suggestion.class : ''}
-            data-suggestion={suggestion.name}>
+            data-suggestion={JSON.stringify(suggestion)}>
             {suggestion.name}
           </li>
         );

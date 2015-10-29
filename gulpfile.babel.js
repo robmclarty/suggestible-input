@@ -16,8 +16,8 @@ gulp.task('component', function () {
     .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('examples', function () {
-  var examplesBasicJS = gulp
+gulp.task('example-basic', function () {
+  var js = gulp
     .src('examples/src/basic/basic.jsx')
     .pipe(webpack({
       output: {
@@ -35,7 +35,7 @@ gulp.task('examples', function () {
     }))
     .pipe(gulp.dest('examples/dist/basic/'));
 
-  var examplesBasicStatics = gulp
+  var staticFiles = gulp
     .src([
       'examples/src/basic/basic.css',
       'examples/src/basic/close-round.svg',
@@ -43,7 +43,37 @@ gulp.task('examples', function () {
     ])
     .pipe(gulp.dest('examples/dist/basic/'));
 
-  return merge(examplesBasicJS, examplesBasicStatics);
+  return merge(js, staticFiles);
+});
+
+gulp.task('example-objects', function () {
+  var js = gulp
+    .src('examples/src/objects/objects.jsx')
+    .pipe(webpack({
+      output: {
+        filename: 'objects.js'
+      },
+      module: {
+        loaders: [
+          { test: /\.jsx$/, loader: 'babel-loader' }
+        ]
+      },
+      externals: {
+        'react': 'React',
+        'react-dom': 'ReactDOM'
+      }
+    }))
+    .pipe(gulp.dest('examples/dist/objects/'));
+
+  var staticFiles = gulp
+    .src([
+      'examples/src/objects/objects.css',
+      'examples/src/objects/close-round.svg',
+      'examples/src/objects/index.html'
+    ])
+    .pipe(gulp.dest('examples/dist/objects/'));
+
+  return merge(js, staticFiles);
 });
 
 gulp.task('test', function () {
@@ -54,6 +84,6 @@ gulp.task('lint', function () {
 
 });
 
-gulp.task('build', ['component', 'examples']);
+gulp.task('build', ['component', 'example-basic', 'example-objects']);
 
 gulp.task('default', ['build']);

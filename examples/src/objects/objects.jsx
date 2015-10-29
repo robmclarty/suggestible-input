@@ -11,7 +11,7 @@ import SuggestibleInput from '../../../dist/suggestible-input.js';
 // need to be accessed here, relative the the suggestion that was selected.
 function onChooseSuggestion(suggestion) {
   if (suggestion.customProperty) {
-    console.log(`Chose suggestion with custom property: ${suggestion.name} - ${suggestion.customProperty}`);
+    console.log(`Chosen suggestion: ${suggestion.name}, Custom Property: ${suggestion.customProperty}`);
   } else {
     console.log(`Chosen suggestion: ${suggestion.name}`);
   }
@@ -43,7 +43,7 @@ let suggestions = [
   { name: 'Yellowknife' },
   { name: 'Iqaluit', class: 'my-custom-class' },
   { name: 'Whitehorse' },
-  { name: 'Victoria }'
+  { name: 'Victoria' }
 ];
 
 ReactDOM.render(
