@@ -112,12 +112,16 @@ The basic HTML markup structure looks like this when it is output to the DOM:
     <ul>
       <li>First Suggestion</li>
       <li>Second Suggestion</li>
-      <li>Third Suggestion</li>
+      <li class="my-custom-class">Third Suggestion</li>
     </ul>
     <div class="suggestible-input-bg"></div>
   </div>
 </div>
 ```
+
+In this code snippet, `.my-custom-class` is an example of what a custom class would
+look like in the markup if it were passed to SuggestibleInput using a list of
+suggestion objects, described under "advanced" usage above.
 
 There are examples in `examples/dist/` that you can use as a starting point.
 
