@@ -4,9 +4,14 @@ import React from 'react';
 
 const enterKeyCode = 13;
 
+// Cut down the total number of suggestions to consider based on a heuristic
+// which matches sequence of characters in needle to that in haystack, not
+// necessarily all in one clump. For example, searching for "tor" would match
+// both "Toronto" and "East York" (as "TORonto" and "easT yORk"). This is meant
+// simply as a fast way to cut down the list to closely matched results which
+// will subsequently be ranked for relevance without requiring the ranking
+// algorithm to be executed on the total list.
 // Based on https://github.com/bevacqua/fuzzysearch
-// This algorithm could definitely be made more accurate and flexible.
-// Possibly consider full-text search like https://github.com/olivernn/lunr.js
 function fuzzysearch(needle, haystack) {
   let hlen = haystack.length;
   let nlen = needle.length;
@@ -18,7 +23,7 @@ function fuzzysearch(needle, haystack) {
     return needle === haystack;
   }
 
-  // `outer` is a label for the for loop referenced by continue. This is an
+  // "outer" is a label for the `for` loop referenced by `continue`. This is an
   // optimization for the V8 interpreter. This is *not* a "good part" of JS.
   // See Vyacheslav Egorov's graph: https://cloud.githubusercontent.com/assets/934293/6550014/d3a86174-c5fc-11e4-8334-b2e2b0d38fad.png.
   /*eslint no-labels: 0*/
@@ -37,7 +42,10 @@ function fuzzysearch(needle, haystack) {
   return true;
 }
 
-// Return the Levenstein distance between two given strings.
+// Return the Levenstein/edit distance between two given strings. This distance
+// is used to sort the list of suggestions from most closely matching the user's
+// input query to least close as a means of giving the user the most relevant
+// list of suggestions.
 // This is a modification based on gist by @andrei-m https://gist.github.com/andrei-m/982927
 // What is the Levenstein distance? https://en.wikipedia.org/wiki/Levenshtein_distance
 function getEditDistance(a, b) {
@@ -98,7 +106,7 @@ function matches(query, suggestions) {
 // between `query` and the string.
 //
 // This is an optimization so that the distance calculation is only ever done
-// once per string so that the byDistance() sorting coparator (below) doesn't
+// once per string so that the byDistance() sorting comparator (below) doesn't
 // go crazy and lag the user's input.
 function distanceToQuery(query) {
   return function (suggestion) {
@@ -295,7 +303,7 @@ const SuggestibleInput = React.createClass({
     }
   },
 
-  // Show "x" for clearing search field only if it isn't currently blank.
+  // Show close-button for clearing search field only if it isn't currently blank.
   clearIsDisabled: function () {
     return this.state.input ? '' : 'disabled';
   },
