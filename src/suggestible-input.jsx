@@ -279,6 +279,7 @@ const SuggestibleInput = React.createClass({
       input: '',
       recentlyChoseSuggestion: true
     });
+    e.preventDefault();
   },
 
   chooseSuggestion: function (e) {
