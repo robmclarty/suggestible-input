@@ -38,7 +38,7 @@ function fuzzysearch(needle, haystack) {
 }
 
 // Return the Levenstein distance between two given strings.
-// This is a modification based on https://gist.github.com/andrei-m/982927
+// This is a modification based on gist by @andrei-m https://gist.github.com/andrei-m/982927
 // What is the Levenstein distance? https://en.wikipedia.org/wiki/Levenshtein_distance
 function getEditDistance(a, b) {
   let matrix = [];

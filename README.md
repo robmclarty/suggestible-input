@@ -160,6 +160,6 @@ React >= 0.14
 
 The initial pattern matching algorithm is based on [fuzzysearch](https://github.com/bevacqua/fuzzysearch).
 
-The JS implementation of the Levenshtein algorithm is based on that in [fuzzyset](https://github.com/Glench/fuzzyset.js).
+The JS implementation of the Levenshtein algorithm is based on [this gist](https://gist.github.com/andrei-m/982927) by [andrei-m](https://gist.github.com/andrei-m).
 
 The "x" icon used in the examples is from [ionicons](https://github.com/driftyco/ionicons).
