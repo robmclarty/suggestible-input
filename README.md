@@ -1,3 +1,5 @@
+[![NPM](https://nodei.co/npm/suggestible-input.png)](https://nodei.co/npm/suggestible-input/)
+
 # Suggestible Input
 
 A [React](http://facebook.github.io/react/index.html)
