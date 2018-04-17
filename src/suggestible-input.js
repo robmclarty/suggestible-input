@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const enterKeyCode = 13;
 
@@ -155,8 +156,32 @@ function suggestionStringsToObjects(suggestionStrings) {
  * @callback {function} [onChange] - Triggered any time the value of the input changes.
  * @callback {function} [onKeyDown] - Triggered by key presses inside input.
  */
-const SuggestibleInput = React.createClass({
+const SuggestibleInput = (props, context) => {
+  const component = { ...React.Component.prototype }
+  
+  SuggestibleInput.displayName = 'SuggestibleInput'
+  
+  SuggestibleInput.propTypes = {
+    suggestions: PropTypes.array,
 
+    value: PropTypes.string,
+    placeholder: PropTypes.string,
+    clearOnSelect: PropTypes.bool,
+    maxSuggestions: PropTypes.number,
+
+    onChoose: PropTypes.func,
+    onChange: PropTypes.func,
+    onKeyDown: PropTypes.func
+  }
+  
+  SuggestibleInput.defaultProps = {
+    suggestions: [],
+    value: undefined, // If no value is defined, then don't set a value.
+    placeholder: '',
+    maxSuggestions: 10,
+    clearOnSelect: false
+  }
+  
   // The initial state of the component.
   // suggestions - An array of suggestion objects used throughout the components
   //   (plain strings are converted to objects before being stored here). This
@@ -166,131 +191,99 @@ const SuggestibleInput = React.createClass({
   //   selecting a suggestion.
   // recentlyChoseSuggestion - A flag to determine if a suggestion was just
   //   chosen, or not (helps optimize rendering).
-  getInitialState: function () {
-    return {
-      suggestions: [],
-      input: '',
-      recentlyChoseSuggestion: false
-    };
-  },
+  const initialState = {
+    suggestions: [],
+    input: '',
+    recentlyChoseSuggestion: false
+  }
 
-  propTypes: {
-    suggestions: React.PropTypes.array,
-
-    value: React.PropTypes.string,
-    placeholder: React.PropTypes.string,
-    clearOnSelect: React.PropTypes.bool,
-    maxSuggestions: React.PropTypes.number,
-
-    onChoose: React.PropTypes.func,
-    onChange: React.PropTypes.func,
-    onKeyDown: React.PropTypes.func
-  },
-
-  // Example suggestion object. The elements of the suggestions array can be
-  // either a set of objects (like the following), or plain strings.
-  // {
-  //   name: 'my suggestion',
-  //   class: 'suggestion-class',
-  //   customAttribute: 'could be a primitive or an object or an array'
-  // }
-  getDefaultProps: function () {
-    return {
-      suggestions: [],
-      value: undefined, // If no value is defined, then don't set a value.
-      placeholder: '',
-      maxSuggestions: 10,
-      clearOnSelect: false
-    };
-  },
-
-  shouldComponentUpdate: function (nextProps, nextState) {
+  const shouldComponentUpdate = (nextProps, nextState) => {
     return nextProps.value === '' ||
-      nextProps.value !== this.props.value ||
-      nextState.input !== this.state.input ||
-      nextState.recentlyChoseSuggestion !== this.state.recentlyChoseSuggestion;
-  },
+      nextProps.value !== component.props.value ||
+      nextState.input !== component.state.input ||
+      nextState.recentlyChoseSuggestion !== component.state.recentlyChoseSuggestion;
+  }
 
-  componentWillMount: function () {
-    this.componentWillReceiveProps(this.props);
-  },
+  const componentWillMount = () => {
+    component.componentWillReceiveProps(component.props);
+  }
 
-  componentWillReceiveProps: function (nextProps) {
+  const componentWillReceiveProps = nextProps => {
     let firstSuggestion = nextProps.suggestions[0];
 
     // If the first element of `suggestions` exists, and it is an object that has
     // a property `name`, then simply store those objects in the state's suggestions.
     if (firstSuggestion && firstSuggestion.hasOwnProperty('name')) {
-      this.setState({ suggestions: nextProps.suggestions });
+      component.setState({ suggestions: nextProps.suggestions });
     }
 
     // If the first element of `suggestions` exists, and it is a plain string,
     // then convert those strings to objects before storing them in the state's
     // suggestions array.
     if (firstSuggestion && typeof firstSuggestion === 'string') {
-      this.setState({ suggestions: suggestionStringsToObjects(nextProps.suggestions) });
+      component.setState({ suggestions: suggestionStringsToObjects(nextProps.suggestions) });
     }
 
     // If an explicit value is passed to the component, set `input` as the value.
     if (nextProps.value !== undefined) {
-      this.setState({ input: nextProps.value });
+      component.setState({ input: nextProps.value });
     }
-  },
+  }
 
   // Whenever the text in the input changes, update the state's input and reset
   // recentlyChoseSuggestion to false so that the suggestions show up again.
   // Finally, if there was an onChange() callback passed in the props, call
   // that at the end so that the parent can update as expected.
-  onChange: function (e) {
-    let inputValue = this.refs.inputField.value;
+  const onChange = e => {
+    let inputValue = component.refs.inputField.value;
 
-    this.setState({
+    component.setState({
       input: inputValue,
       recentlyChoseSuggestion: false
     });
 
-    if (this.props.onChange) {
-      this.props.onChange(e);
+    if (component.props.onChange) {
+      component.props.onChange(e);
     }
-  },
+  }
 
   // Simply call props.onKeyDown if it was defined, otherwise this component
   // doesn't do anything onKeyDown itself.
-  onKeyDown: function (e) {
+  const onKeyDown = e => {
     if (e.keyCode === enterKeyCode) {
-      this.clearInput();
+      component.clearInput();
     }
 
-    if (this.props.onKeyDown) {
-      this.props.onKeyDown(e);
+    if (component.props.onKeyDown) {
+      component.props.onKeyDown(e);
     }
-  },
+  }
 
   // When clicking outside the suggestion box area, force the component to
   // behave *as if* a suggestion had recently been chosen (i.e., hide the
   // suggestion drop-down selection).
-  closeSuggestions: function (e) {
-    this.setState({ recentlyChoseSuggestion: true });
+  const closeSuggestions = e => {
+    component.setState({ recentlyChoseSuggestion: true });
     e.preventDefault();
-  },
+  }
 
-  clearInput: function (e) {
-    this.setState({
+  const clearInput = e => {
+    component.setState({
       input: '',
       recentlyChoseSuggestion: true
     });
     e.preventDefault();
-  },
+  }
 
-  chooseSuggestion: function (e) {
+  const chooseSuggestion = e => {
     let suggestion = JSON.parse(e.target.dataset.suggestion);
 
     e.preventDefault();
 
-    if (this.props.clearOnSelect) {
-      this.clearInput();
+    if (component.props.clearOnSelect) {
+      component.clearInput();
     } else {
-      this.setState({
+      component.setState({
         input: suggestion.name,
         recentlyChoseSuggestion: true
       });
@@ -299,26 +292,26 @@ const SuggestibleInput = React.createClass({
     // If the caller has specified a callback for onChoose, call that after
     // selecting a new suggestion, otherwise, focus on the input field with
     // the newly populated suggestion.
-    if (this.props.onChoose) {
-      this.props.onChoose(suggestion);
+    if (component.props.onChoose) {
+      component.props.onChoose(suggestion);
     }
-  },
+  }
 
   // Show close-button for clearing search field only if it isn't currently blank.
-  clearIsDisabled: function () {
-    return this.state.input ? '' : 'disabled';
-  },
+  const clearIsDisabled = () => {
+    return component.state.input ? '' : 'disabled';
+  }
 
-  // Return an array of JSX elements based on any matches in this.props.suggestions to the value of input.
+  // Return an array of JSX elements based on any matches in component.props.suggestions to the value of input.
   // Sort by simple heuristic: if input is closer to the beginning of the suggestion string
   // (e.g., "Toronto" should be more relevant than "Victoria" for the input "tor").
-  renderSuggestions: function (input) {
-    let clickHandler = this.chooseSuggestion;
+  const renderSuggestions = input => {
+    let clickHandler = component.chooseSuggestion;
 
-    return matches(input, this.state.suggestions)
+    return matches(input, component.state.suggestions)
       .map(distanceToQuery(input))
       .sort(byDistance)
-      .slice(0, this.props.maxSuggestions)
+      .slice(0, component.props.maxSuggestions)
       .map((suggestionWithDistance, i) => {
         let suggestion = suggestionWithDistance.suggestion;
 
@@ -332,13 +325,13 @@ const SuggestibleInput = React.createClass({
           </li>
         );
       });
-  },
+  }
 
-  render: function () {
+  const render = () => {
     let suggestionsMarkup = '';
 
-    if (!this.state.recentlyChoseSuggestion) {
-      let suggestionsList = this.renderSuggestions(this.state.input);
+    if (!component.state.recentlyChoseSuggestion) {
+      let suggestionsList = component.renderSuggestions(component.state.input);
 
       if (suggestionsList.length > 0) {
         suggestionsMarkup = (
@@ -347,7 +340,7 @@ const SuggestibleInput = React.createClass({
               {suggestionsList}
             </ul>
             <div
-              onClick={this.closeSuggestions}
+              onClick={component.closeSuggestions}
               className="suggestible-input-bg"></div>
           </div>
         );
@@ -358,19 +351,34 @@ const SuggestibleInput = React.createClass({
       <div className="suggestible-input">
         <input
           type="text"
-          className={this.props.className}
+          className={component.props.className}
           ref='inputField'
-          onChange={this.onChange}
-          onKeyDown={this.onKeyDown}
-          value={this.state.input}
-          placeholder={this.props.placeholder} />
+          onChange={component.onChange}
+          onKeyDown={component.onKeyDown}
+          value={component.state.input}
+          placeholder={component.props.placeholder} />
         <button
-          className={`suggestible-input-clear ${this.clearIsDisabled()}`}
-          onClick={this.clearInput}></button>
+          className={`suggestible-input-clear ${component.clearIsDisabled()}`}
+          onClick={component.clearInput}></button>
         {suggestionsMarkup}
       </div>
     );
   }
-});
+  
+  return Object.assign(component, {
+    props,
+    context,
+    state: initialState,
+    shouldComponentUpdate,
+    componentWillMount,
+    componentWillReceiveProps,
+    onChange,
+    onKeyDown,
+    closeSuggestions,
+    clearIsDisabled,
+    renderSuggestions,
+    render
+  })
+}
 
 export default SuggestibleInput;
