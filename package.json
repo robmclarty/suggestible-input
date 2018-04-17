@@ -1,13 +1,13 @@
 {
   "name": "suggestible-input",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "A React component that quacks like an HTML <input> but which includes a selectable list of suggestions for filling in its value.",
   "main": "dist/suggestible-input.js",
   "author": "Rob McLarty <r@robmclarty.com> (http://robmclarty.com)",
   "license": "MIT",
   "homepage": "https://github.com/robmclarty/suggestible-input",
   "scripts": {
-    "build": "npx soko build:js ./src/suggestible-input.js --jsOut ./dist/suggestible-input.js",
+    "build": "npx soko build:js ./src/suggestible-input.js --jsOut ./dist/suggestible-input.js --production",
     "prepublish": "npm run build"
   },
   "peerDependencies": {
